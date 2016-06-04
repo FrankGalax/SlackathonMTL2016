@@ -18,6 +18,7 @@ namespace SlackathonMTL
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        static Dictionary<string, ChannelAccount> accountsForId = new Dictionary<string, ChannelAccount>();
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -106,9 +107,14 @@ namespace SlackathonMTL
             }
             else if (message.Type == "UserAddedToConversation")
             {
+                accountsForId[message.From.Id] = message.From;
             }
             else if (message.Type == "UserRemovedFromConversation")
             {
+                if (accountsForId.ContainsKey(message.From.Id))
+                {
+                    accountsForId.Remove(message.From.Id);
+                }
             }
             else if (message.Type == "EndOfConversation")
             {
@@ -181,15 +187,18 @@ namespace SlackathonMTL
         {
             Message ack = message.CreateReplyMessage($"broadcast done {message.From.ChannelId} {message.From.Address} {message.From.Id} {message.From.Name} {message.From.IsBot}");
 
-            /*var connector = new ConnectorClient();
+            var connector = new ConnectorClient();
             List<ChannelAccount> participants = new List<ChannelAccount>();
 
-            Message broadcastMessage = new Message();
-            message.From = ack.From;
-            message.To = new ChannelAccount() { ChannelId = "general" };
-            message.Text = "Broadcast Test";
-            message.Language = "en";
-            connector.Messages.SendMessage(message);*/
+            foreach (string user in accountsForId.Keys)
+            {
+                Message broadcastMessage = new Message();
+                message.From = ack.From;
+                message.Text = "Broadcast Test";
+                message.Language = "en";
+                message.To = accountsForId[user];
+                connector.Messages.SendMessage(message);
+            }
 
             return ack;
         }
