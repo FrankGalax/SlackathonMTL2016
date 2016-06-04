@@ -186,7 +186,7 @@ namespace SlackathonMTL
                 {
                     new KeyValuePair<string,string>("Text", broadcastText)
                 });
-                var result = client.PostAsync("/api/messages", content).Result;
+                var result = client.PostAsync("/api/PostMessage", content).Result;
             }
             Message ack = message.CreateReplyMessage("broadcast done");
             return ack;
