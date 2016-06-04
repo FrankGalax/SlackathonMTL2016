@@ -125,8 +125,10 @@ namespace SlackathonMTL
 
         private void CheckForNewUser(Message message)
         {
-            accountsForId[message.From.Id] = message.From;
-
+            if (!message.From.IsBot.Value)
+            {
+                accountsForId[message.From.Id] = message.From;
+            }
             Person person = Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id);
             if (person == null)
             {
@@ -174,30 +176,36 @@ namespace SlackathonMTL
                     broadcast.Asker.Id != asker.Id)
                     continue;
 
-                broadcast.Status = BroadcastStatus.WaitingForAnswer;
+                broadcast.Status = BroadcastStatus.WaitingForApproval;
 
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
-                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question. Is it a good answer?");
-                message.To = broadcast.Asker;
-                connector.Messages.SendMessage(message);
+
+                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question. Is it a good answer?" + message.Text);
+
+                Message replyMessage = new Message();
+                replyMessage.From = answerAck.From;
+                replyMessage.Text = answerAck.Text;
+                replyMessage.Language = "en";
+                replyMessage.To = broadcast.Asker;
+                connector.Messages.SendMessage(replyMessage);
+
                 break;
             }
         }
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            string res = "";
-            foreach (var entry in accountsForId)
-            {
-                res += $"{{{entry.Value.Id} {entry.Value.ChannelId} {entry.Value.Address} {entry.Value.IsBot} {entry.Value.Name}}} ";
-            }
-            Message ack = message.CreateReplyMessage($"broadcast done {res}");
+            Broadcast.Add(subjectName, message.From);
+
+            Message ack = message.CreateReplyMessage($"broadcast done");
 
             var connector = new ConnectorClient();
 
             foreach (string user in accountsForId.Keys)
             {
+                if (accountsForId[user].Id == message.From.Id) continue;
+
                 Message broadcastMessage = new Message();
                 broadcastMessage.From = ack.From;
                 broadcastMessage.Text = broadcastText;
@@ -205,6 +213,7 @@ namespace SlackathonMTL
                 broadcastMessage.To = accountsForId[user];
                 connector.Messages.SendMessage(broadcastMessage);
             }
+
 
             return ack;
         }
