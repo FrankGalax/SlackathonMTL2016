@@ -105,8 +105,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\InterpretorResult.cs" />
     <Compile Include="Model\Matrix.cs" />
     <Compile Include="Model\MatrixEntry.cs" />
+    <Compile Include="Model\MessageInterpretor.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Reply.cs" />
     <Compile Include="Model\ReplyType.cs" />
