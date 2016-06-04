@@ -195,13 +195,14 @@ namespace SlackathonMTL
 
             foreach (string user in accountsForId.Keys)
             {
-                Message broadcastMessage = new Message();
-                message.From = ack.From;
-                message.Text = "Broadcast Test";
-                message.Language = "en";
-                message.To = accountsForId[user];
-                connector.Messages.SendMessage(message);
+                participants.Add(accountsForId[user]);
             }
+            Message broadcastMessage = new Message();
+            message.From = ack.From;
+            message.Text = $"{accountsForId.Keys}";
+            message.Language = "en";
+            message.Participants = participants;
+            connector.Messages.SendMessage(message);
 
             return ack;
         }
