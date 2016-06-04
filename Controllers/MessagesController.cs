@@ -47,14 +47,16 @@ namespace SlackathonMTL
                 {
                     case IntentType.None:
                         return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
-                        break;
                     case IntentType.FindAnExpert:
-                        return FindExpert(message.Text, message);
-                        break;
+                        Entity entity = result.entities.FirstOrDefault(p => p.type == "Subject");
+                        if (entity == null)
+                        {
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
+                        }
+                        return FindExpert(entity.entity, message);
                     case IntentType.FindExpertise:
                     case IntentType.FindExpertiseForSubject:
                         return message.CreateReplyMessage(intentType.ToString(), "en");
-                        break;
                 }
             }
             return HandleSystemMessage(message);
