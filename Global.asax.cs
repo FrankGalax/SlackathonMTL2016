@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SlackathonMTL.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,10 @@ namespace SlackathonMTL
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            Person.Load();
+            Subject.Load();
+            Matrix.Load();
         }
     }
 }

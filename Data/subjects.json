@@ -1,18 +1,18 @@
 [
   {
     "Id": 0,
-    "Name": "SQL"
+    "Name": "sql"
   },
   {
     "Id": 1,
-    "Name": "HR"
+    "Name": "hr"
   },
   {
     "Id": 2,
-    "Name": "C++"
+    "Name": "c++"
   },
   {
     "Id": 3,
-    "Name": "Java"
+    "Name": "java"
   }
 ]

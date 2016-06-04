@@ -7,8 +7,8 @@ namespace SlackathonMTL.Model
 {
     public class MatrixEntry
     {
-        public int PersonId { get; set; }
-        public int SubjectId { get; set; }
+        public string PersonId { get; set; }
+        public string SubjectId { get; set; }
         public int Points { get; set; }
     }
 }

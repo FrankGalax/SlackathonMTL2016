@@ -10,12 +10,12 @@ namespace SlackathonMTL.Model
 {
     public class Matrix
     {
-        private static Dictionary<int, Dictionary<int, int>> m_personSubjectPoints;
+        private static Dictionary<string, Dictionary<string, int>> m_personSubjectPoints;
         private static string m_path;
 
         static Matrix()
         {
-            m_personSubjectPoints = new Dictionary<int, Dictionary<int, int>>();
+            m_personSubjectPoints = new Dictionary<string, Dictionary<string, int>>();
             string appPath = HttpRuntime.AppDomainAppPath;
             m_path = Path.Combine(appPath, "Data", "matrix.json");
         }
@@ -29,7 +29,7 @@ namespace SlackathonMTL.Model
 
             foreach (Person person in persons)
             {
-                m_personSubjectPoints.Add(person.Id, new Dictionary<int, int>());
+                m_personSubjectPoints.Add(person.Id, new Dictionary<string, int>());
                 foreach (Subject subject in subjects)
                 {
                     m_personSubjectPoints[person.Id].Add(subject.Id, 0);
@@ -106,7 +106,7 @@ namespace SlackathonMTL.Model
         {
             if (!m_personSubjectPoints.ContainsKey(person.Id))
             {
-                m_personSubjectPoints.Add(person.Id, new Dictionary<int, int>());
+                m_personSubjectPoints.Add(person.Id, new Dictionary<string, int>());
             }
 
             if (!m_personSubjectPoints[person.Id].ContainsKey(subject.Id))

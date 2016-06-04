@@ -1,7 +1,17 @@
 [
   {
-    "PersonId": 0,
-    "SubjectId": 2,
+    "PersonId": "478063c5",
+    "SubjectId": "2",
     "Points": 3
+  },
+  {
+    "PersonId": "94e71579",
+    "SubjectId": "2",
+    "Points": 1
+  },
+  {
+    "PersonId": "716291d",
+    "SubjectId": "2",
+    "Points": 0
   }
 ]

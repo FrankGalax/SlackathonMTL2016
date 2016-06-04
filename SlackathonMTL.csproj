@@ -105,6 +105,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\Broadcast.cs" />
+    <Compile Include="Model\BroadcastStatus.cs" />
     <Compile Include="Model\Matrix.cs" />
     <Compile Include="Model\MatrixEntry.cs" />
     <Compile Include="Model\Person.cs" />

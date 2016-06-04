@@ -10,8 +10,8 @@ namespace SlackathonMTL.Model
 {
     public class Person
     {
-        public int Id { get; private set; }
-        public string Username { get; private set; }
+        public string Id { get; set; }
+        public string Username { get; set; }
 
         private static List<Person> m_persons;
         private static string m_path;
@@ -54,14 +54,17 @@ namespace SlackathonMTL.Model
             }
         }
 
-        public static void Add(string username)
+        public static void Add(Person person)
         {
-            Person person = new Person
-            {
-                Id = m_persons.Max(p => p.Id) + 1,
-                Username = username
-            };
             m_persons.Add(person);
+        }
+
+        public static void Update(Person person)
+        {
+            Person p = m_persons.FirstOrDefault(pe => pe.Id == person.Id);
+            if (p == null)
+                return;
+            p.Username = person.Username;
         }
 
         public static List<Person> GetAll()

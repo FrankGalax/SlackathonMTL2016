@@ -10,8 +10,8 @@ namespace SlackathonMTL.Model
 {
     public class Subject
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
 
         private static List<Subject> m_subjects;
         private static string m_path;
@@ -33,12 +33,12 @@ namespace SlackathonMTL.Model
             foreach (var item in jArray.Children())
             {
                 dynamic p = JsonConvert.DeserializeObject(item.ToString());
-                Subject person = new Subject
+                Subject subject = new Subject
                 {
                     Id = p.Id,
                     Name = p.Name
                 };
-                m_subjects.Add(person);
+                m_subjects.Add(subject);
             }
         }
 
@@ -54,14 +54,9 @@ namespace SlackathonMTL.Model
             }
         }
 
-        public static void Add(string name)
+        public static void Add(Subject subject)
         {
-            Subject person = new Subject
-            {
-                Id = m_subjects.Max(p => p.Id) + 1,
-                Name = name
-            };
-            m_subjects.Add(person);
+            m_subjects.Add(subject);
         }
 
         public static List<Subject> GetAll()

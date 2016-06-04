@@ -1,14 +1,14 @@
-﻿[
+[
   {
-    "Id": 0,
+    "Id": "478063c5",
     "Username": "Galax"
   },
   {
-    "Id": 1,
-    "Username": "TomSagala"
+    "Id": "94e71579",
+    "Username": "tomSagala"
   },
   {
-    "Id": 2,
-    "Username": "BenBonjour"
+    "Id": "716291d",
+    "Username": "benbonjour"
   }
 ]
