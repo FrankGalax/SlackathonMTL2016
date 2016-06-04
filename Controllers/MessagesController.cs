@@ -187,7 +187,7 @@ namespace SlackathonMTL
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            String msg = $"broadcast done chanelId : {message.From.ChannelId} id : {message.From.Id} name : {message.From.Name} address : {message.From.Address}";
+            String msg = $"broadcast done chanelId : {message.To.ChannelId} id : {message.To.Id} name : {message.To.Name} address : {message.To.Address}";
             Message ack = message.CreateReplyMessage(msg);
 
             var connector = new ConnectorClient();
