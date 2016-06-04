@@ -215,7 +215,7 @@ namespace SlackathonMTL
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                return BroadcastMessage(subjectName, $"{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}", message);
+                return BroadcastMessage(subjectName, $"@{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}", message);
             }
 
             List<Person> persons = Person.GetAll();
