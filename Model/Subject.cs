@@ -25,7 +25,7 @@ namespace SlackathonMTL.Model
 
         public static void Load()
         {
-            m_subjects = new List<Subject>();
+            m_subjects.Clear();
 
             string json = System.IO.File.ReadAllText(m_path);
 
@@ -62,6 +62,11 @@ namespace SlackathonMTL.Model
                 Name = name
             };
             m_subjects.Add(person);
+        }
+
+        public static List<Subject> GetAll()
+        {
+            return m_subjects;
         }
     }
 }
