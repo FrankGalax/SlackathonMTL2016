@@ -45,6 +45,7 @@ namespace SlackathonMTL.Model
         public int startIndex { get; set; }
         public int endIndex { get; set; }
         public float score { get; set; }
+        public string GetEntityName() { return entity.Replace(" ", ""); }
     }
 
 }

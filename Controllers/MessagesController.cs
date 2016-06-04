@@ -39,18 +39,40 @@ namespace SlackathonMTL
                         prob = intent.score;
                     }
                 }
-
+                Entity entity1;
+                Entity entity2;
                 switch (intentType)
                 {
                     case IntentType.None:
                         return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
-                        break;
+                        
                     case IntentType.FindAnExpert:
-                        return FindExpert(message.Text, message);
+                        entity1 = result.entities[0];
+                        if (entity1 != null && entity1.type == "Subject")
+                        {
+                            return FindExpert(entity1.GetEntityName(), message);
+                        }
                         break;
                     case IntentType.FindExpertise:
+                        entity1 = result.entities[0];
+                        if (entity1 != null && entity1.type == "Person")
+                        {
+                            return FindExpertise(entity1.GetEntityName(), message);
+                        }
+                        break;
                     case IntentType.FindExpertiseForSubject:
-                        return message.CreateReplyMessage(intentType.ToString(), "en");
+                        entity1 = result.entities[0];
+                        entity2 = result.entities[1];
+                        if (entity1 == null || entity2 == null) break;
+
+                        if (entity1.type == "Person" && entity2.type == "Subject")
+                        {
+                            return FindExpertiseForSubject(entity1.GetEntityName(), entity2.GetEntityName(), message);
+                        }
+                        if (entity1.type == "Subject" && entity2.type == "Person")
+                        {
+                            return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
+                        }
                         break;
                 }
             }
@@ -155,15 +177,74 @@ namespace SlackathonMTL
             StringBuilder response = new StringBuilder();
             if (potentialExperts.Count == 0)
             {
-                // No expert
+                response.Append(Reply.GetReply(ReplyType.NoExpertsFound).Text);
             }
             else
             {
                 for (int i = 0; i < potentialExperts.Count && i < 3; ++i)
                 {
-                    response.Append(string.Format("@{0} ", potentialExperts[i].Key.Username));
+                    response.Append(string.Format($"{potentialExperts[i].Key.Username}\n"));
                 }
             }
+            return message.CreateReplyMessage(response.ToString(), "en");
+        }
+
+        private Message FindExpertise(string personName, Message message)
+        {
+            personName = personName.ToLower();
+            Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
+            if (person == null)
+            {
+                return message.CreateReplyMessage("unkown person", "en");
+            }
+
+            List<Subject> subjects = Subject.GetAll();
+
+            List<KeyValuePair<Subject, int>> potentialExpertise = new List<KeyValuePair<Subject, int>>();
+
+            foreach (var subject in subjects)
+            {
+                int points = Matrix.GetPoints(person, subject);
+                if (points > 0)
+                {
+                    potentialExpertise.Add(new KeyValuePair<Subject, int>(subject, points));
+                }
+            }
+            potentialExpertise.Sort((p1, p2) => p2.Value - p1.Value);
+
+            StringBuilder response = new StringBuilder();
+            if (potentialExpertise.Count == 0)
+            {
+                response.Append(Reply.GetReply(ReplyType.NoExpertsFound).Text);
+            }
+            else
+            {
+                for (int i = 0; i < potentialExpertise.Count && i < 3; ++i)
+                {
+                    response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
+                }
+            }
+            return message.CreateReplyMessage(response.ToString(), "en");
+        }
+
+        private Message FindExpertiseForSubject(string personName, string subjectName, Message message)
+        {
+            personName = personName.ToLower();
+            Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
+            if (person == null)
+            {
+                return message.CreateReplyMessage("unkown person", "en");
+            }
+            Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
+            if (subject == null)
+            {
+                return message.CreateReplyMessage("unkown subject", "en");
+            }
+
+            float points = Matrix.GetPoints(person, subject);
+
+            StringBuilder response = new StringBuilder();
+            response.Append(string.Format($"{person.Username} has {points} points for {subject.Name}"));
             return message.CreateReplyMessage(response.ToString(), "en");
         }
     }
