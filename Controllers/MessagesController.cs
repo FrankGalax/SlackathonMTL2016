@@ -8,6 +8,7 @@ using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Utilities;
 using Newtonsoft.Json;
+using SlackathonMTL.Model;
 
 namespace SlackathonMTL
 {
@@ -24,6 +25,8 @@ namespace SlackathonMTL
             {
                 // calculate something for us to return
                 int length = (message.Text ?? string.Empty).Length;
+
+                InterpretorResult result =  await MessageInterpretor.InterpretMessage(message.Text);
 
                 // return our reply to the user
                 return message.CreateReplyMessage($"You sent {length} characters");
