@@ -196,19 +196,15 @@ namespace SlackathonMTL
 
             var connector = new ConnectorClient();
 
-            List<ChannelAccount> participants = new List<ChannelAccount>();
-
             foreach (string user in accountsForId.Keys)
             {
-                //participants.Add(accountsForId[user]);
                 Message broadcastMessage = new Message();
                 broadcastMessage.From = ack.From;
-                broadcastMessage.Text = $"{accountsForId.Keys}";
+                broadcastMessage.Text = broadcastText;
                 broadcastMessage.Language = "en";
                 broadcastMessage.To = accountsForId[user];
                 connector.Messages.SendMessage(broadcastMessage);
             }
-
 
             return ack;
         }
