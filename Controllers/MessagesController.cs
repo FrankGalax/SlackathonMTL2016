@@ -179,16 +179,18 @@ namespace SlackathonMTL
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://wakow2.azurewebsites.net");
-                var content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string,string>("Text", broadcastText)
-                });
-                var result = client.PostAsync("/api/PostMessage", content).Result;
-            }
             Message ack = message.CreateReplyMessage("broadcast done");
+
+            var connector = new ConnectorClient();
+            List<ChannelAccount> participants = new List<ChannelAccount>();
+
+            Message broadcastMessage = new Message();
+            message.From = ack.From;
+            message.To = new ChannelAccount() { ChannelId = "general" };
+            message.Text = "Broadcast Test";
+            message.Language = "en";
+            connector.Messages.SendMessage(message);
+
             return ack;
         }
 
