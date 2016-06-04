@@ -1,0 +1,54 @@
+{
+	"Greetings" : ["I'm blessed to be part of this discussion.",
+				   "You shall be honoured by my presence.",
+				   "Oh hi, everyone!",
+				   "Happy to be of help!",
+				   "I feel like a part of your team now :D"],
+
+	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
+							  "Would you like a :coffee: while I'm searching ?",
+							  "Casually looking at details of your department :mag: ..."],
+	
+
+
+	"ManyExpertsFound" : ["I have just what you need :godmode: :",
+						  "Well well well; What do we have here :mag: :",
+						  "I found these using my astute powers of deduction :squirrel: :",
+						  "Got to say I outdid myself this time :nail_care: :"],
+
+	"FewExpertsFound" : ["Perhaps these will be useful :",
+						 "If my sources are accurate these will be good :",
+						 "I was able to found these :",
+						 "Your subject isn't very popular yet, but since I'm great I found :"],
+	
+	"NoExpertsFound" : ["I'm sorry my dear, but my research was vein :'( ",
+						"Even my best sources could not help you. Good luck in your endeavour.",
+						"/shrug Looks like you're on your own.",
+						"I find the lack of answers troubling.",
+						"I didn't find any experts, but here's a :cookie:"],
+	
+
+
+	"ManyExpertiseFound" : ["Impressive !",
+							"I wish I knew all of that !"],
+	
+	"FewExpertiseFound" : ["They're not completly ignorant.",
+						   "I've seen better, but this is okay... I guess."],
+	
+	"NoExpertiseFound" : ["Nah, they're no good.",
+						  "Better luck next time.",
+						  "Seems like they aren't recognized in anything yet.",
+						  "Sad ... Truly."],
+
+
+
+	"AcceptedAnswer" : ["This person is any good... huh",
+						"Oh interesting ... :black_nib:",
+						"Noted ! :pencil2:"],
+
+	"Reference" : ["So this person's an expert :smirk: thanks for the info.",
+				   "Oh my! Got to add this to my list.",
+				   "Thank you for the information. I shall make great use of it.",
+				   "You've just helped in more ways than one and for that I thank you.",
+				   "Oh my! I don't know how I missed it! Thanks :P"]
+}

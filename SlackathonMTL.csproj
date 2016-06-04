@@ -107,6 +107,8 @@
     </Compile>
     <Compile Include="Model\Matrix.cs" />
     <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Reply.cs" />
+    <Compile Include="Model\ReplyType.cs" />
     <Compile Include="Model\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -116,6 +118,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\subjects.json" />
+    <Content Include="Data\replies.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
