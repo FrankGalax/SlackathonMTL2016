@@ -10,7 +10,9 @@ namespace SlackathonMTL.Model
         None,
         FindAnExpert,
         FindExpertise,
-        FindExpertiseForSubject
+        FindExpertiseForSubject,
+        BroadcastAnswerAccepted,
+        BroadcastAnswerDenied
     }
 
     public class InterpretorResult
