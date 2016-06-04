@@ -11,6 +11,7 @@ namespace SlackathonMTL.Model
         public string SubjectName;
         public ChannelAccount Asker;
         public BroadcastStatus Status;
+        public ChannelAccount Answerer;
 
         private static List<Broadcast> m_currentBroadcasts;
 

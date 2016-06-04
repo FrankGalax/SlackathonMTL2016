@@ -84,7 +84,7 @@ namespace SlackathonMTL
                         entity1 = result.entities[0];
                         if (entity1 != null && entity1.type == "Person")
                         {
-                            return BroadcastAccept(entity1.GetEntityName(), message);
+                            return BroadcastAccept(message);
                         }
                         break;
 
@@ -163,18 +163,12 @@ namespace SlackathonMTL
         }
 
 
-        private Message BroadcastAccept(string userName, Message message)
+        private Message BroadcastAccept(Message message)
         {
-            Person person = Person.GetAll().FirstOrDefault(p => p.Username == userName);
-            if (person == null)
-            {
-                return message.CreateReplyMessage("unkown person", "en");
-            }
-
             Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => b.Asker.Id == message.From.Id && b.Status == BroadcastStatus.WaitingForApproval);
             if (broadcast == null)
             {
-                return message.CreateReplyMessage("you have no open questions", "en");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
             }
 
             Subject subject = Subject.GetAll().FirstOrDefault(s => s.Name == broadcast.SubjectName);
@@ -183,6 +177,12 @@ namespace SlackathonMTL
                 subject = new Subject { Id = Guid.NewGuid().ToString(), Name = broadcast.SubjectName };
                 Subject.Add(subject);
                 Subject.Save();
+            }
+
+            Person person = Person.GetAll().FirstOrDefault(p => p.Id == broadcast.Answerer.Id);
+            if (person == null)
+            {
+                return message.CreateReplyMessage("Something went horibly wrong, put the laptop down and run away!", "en");
             }
 
             Matrix.SetPoints(person, subject, Matrix.GetPoints(person, subject) + 1);
@@ -234,7 +234,7 @@ namespace SlackathonMTL
                     continue;
 
                 broadcast.Status = BroadcastStatus.WaitingForApproval;
-
+                broadcast.Answerer = message.From;
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
 
@@ -254,7 +254,6 @@ namespace SlackathonMTL
 
                 replyMessage.Text = "Is it a good answer?";
                 connector.Messages.SendMessage(replyMessage);
-
 
                 return true;
             }
