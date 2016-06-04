@@ -125,6 +125,8 @@ namespace SlackathonMTL
 
         private void CheckForNewUser(Message message)
         {
+            accountsForId[message.From.Id] = message.From;
+
             Person person = Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id);
             if (person == null)
             {
