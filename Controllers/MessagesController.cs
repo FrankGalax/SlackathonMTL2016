@@ -177,9 +177,17 @@ namespace SlackathonMTL
             }
         }
 
-        private Message BroadcastMessage(string subjectName, Message message)
+        private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            Broadcast.Add(subjectName, message.From);
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://wakow2.azurewebsites.net");
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string,string>("Text", broadcastText)
+                });
+                var result = client.PostAsync("/api/messages", content).Result;
+            }
             Message ack = message.CreateReplyMessage("broadcast done");
             return ack;
         }
@@ -190,7 +198,7 @@ namespace SlackathonMTL
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                return BroadcastMessage(subjectName, message);
+                return BroadcastMessage(subjectName, $"{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}", message);
             }
 
             List<Person> persons = Person.GetAll();
