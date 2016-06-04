@@ -80,7 +80,7 @@ namespace SlackathonMTL
                             return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
                         }
                         break;
-                    case IntentType.BroadcastAnswerAccept:
+                    case IntentType.BroadcastAnswerAccepted:
                         entity1 = result.entities[0];
                         if (entity1 != null && entity1.type == "Person")
                         {
@@ -238,7 +238,9 @@ namespace SlackathonMTL
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
 
-                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question. Is it a good answer?" + message.Text);
+                string answerString = message.Text;
+
+                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question.");
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
@@ -246,6 +248,13 @@ namespace SlackathonMTL
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
                 connector.Messages.SendMessage(replyMessage);
+
+                replyMessage.Text = answerString;
+                connector.Messages.SendMessage(replyMessage);
+
+                replyMessage.Text = "Is it a good answer?";
+                connector.Messages.SendMessage(replyMessage);
+
 
                 return true;
             }

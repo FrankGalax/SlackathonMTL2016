@@ -11,7 +11,7 @@ namespace SlackathonMTL.Model
         FindAnExpert,
         FindExpertise,
         FindExpertiseForSubject,
-        BroadcastAnswerAccept,
+        BroadcastAnswerAccepted,
         BroadcastAnswerDenied
     }
 
