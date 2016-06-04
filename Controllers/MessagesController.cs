@@ -179,9 +179,9 @@ namespace SlackathonMTL
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            Message ack = message.CreateReplyMessage("broadcast done");
+            Message ack = message.CreateReplyMessage("broadcast done" + message.From.ToString());
 
-            var connector = new ConnectorClient();
+            /*var connector = new ConnectorClient();
             List<ChannelAccount> participants = new List<ChannelAccount>();
 
             Message broadcastMessage = new Message();
@@ -189,7 +189,7 @@ namespace SlackathonMTL
             message.To = new ChannelAccount() { ChannelId = "general" };
             message.Text = "Broadcast Test";
             message.Language = "en";
-            connector.Messages.SendMessage(message);
+            connector.Messages.SendMessage(message);*/
 
             return ack;
         }
