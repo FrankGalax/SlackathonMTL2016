@@ -5,6 +5,14 @@ using System.Web;
 
 namespace SlackathonMTL.Model
 {
+    public enum IntentType
+    {
+        None,
+        FindAnExpert,
+        FindExpertise,
+        FindExpertiseForSubject
+    }
+
     public class InterpretorResult
     {
         public string query { get; set; }
@@ -17,6 +25,10 @@ namespace SlackathonMTL.Model
         public string intent { get; set; }
         public float score { get; set; }
         public Action[] actions { get; set; }
+        public IntentType GetIntentType()
+        {
+            return (IntentType)Enum.Parse(typeof(IntentType), intent);
+        }
     }
 
     public class Action

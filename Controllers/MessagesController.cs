@@ -31,12 +31,33 @@ namespace SlackathonMTL
                 CheckForBroadcastAnswer(message);
                 
                 InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
-                return FindExpert(message.Text, message);
+                float prob = 0f;
+                IntentType intentType = IntentType.None;
+
+                foreach (Intent intent in result.intents)
+                {
+                    if (intent.score > prob)
+                    {
+                        intentType = intent.GetIntentType();
+                        prob = intent.score;
+                    }
+                }
+
+                switch (intentType)
+                {
+                    case IntentType.None:
+                        return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
+                        break;
+                    case IntentType.FindAnExpert:
+                        return FindExpert(message.Text, message);
+                        break;
+                    case IntentType.FindExpertise:
+                    case IntentType.FindExpertiseForSubject:
+                        return message.CreateReplyMessage(intentType.ToString(), "en");
+                        break;
+                }
             }
-            else
-            {
-                return HandleSystemMessage(message);
-            }
+            return HandleSystemMessage(message);
         }
 
         private Message HandleSystemMessage(Message message)
