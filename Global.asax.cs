@@ -17,6 +17,7 @@ namespace SlackathonMTL
             Person.Load();
             Subject.Load();
             Matrix.Load();
+            Reply.Load();
         }
     }
 }

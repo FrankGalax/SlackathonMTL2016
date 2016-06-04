@@ -7,6 +7,7 @@ namespace SlackathonMTL.Model
 {
     public enum ReplyType
     {
+        None,
         Greetings,
         QuestionSubjectFound,
         ManyExpertsFound,
