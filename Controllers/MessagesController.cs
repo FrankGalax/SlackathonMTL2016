@@ -185,7 +185,7 @@ namespace SlackathonMTL
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            Message ack = message.CreateReplyMessage($"broadcast done {accountsForId.Keys}");
+            Message ack = message.CreateReplyMessage($"broadcast done {accountsForId.Keys.Count}");
 
             var connector = new ConnectorClient();
             List<ChannelAccount> participants = new List<ChannelAccount>();
