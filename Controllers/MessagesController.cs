@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using SlackathonMTL.Model;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SlackathonMTL
 {
@@ -27,6 +28,8 @@ namespace SlackathonMTL
             {
                 CheckForNewUser(message);
 
+                CheckForBroadcastAnswer(message);
+                
                 InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                 float prob = 0f;
                 IntentType intentType = IntentType.None;
@@ -45,7 +48,7 @@ namespace SlackathonMTL
                 {
                     case IntentType.None:
                         return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
-                        
+       
                     case IntentType.FindAnExpert:
                         entity1 = result.entities[0];
                         if (entity1 != null && entity1.type == "Subject")
@@ -53,6 +56,7 @@ namespace SlackathonMTL
                             return FindExpert(entity1.GetEntityName(), message);
                         }
                         break;
+
                     case IntentType.FindExpertise:
                         entity1 = result.entities[0];
                         if (entity1 != null && entity1.type == "Person")
@@ -60,7 +64,9 @@ namespace SlackathonMTL
                             return FindExpertise(entity1.GetEntityName(), message);
                         }
                         break;
+
                     case IntentType.FindExpertiseForSubject:
+
                         entity1 = result.entities[0];
                         entity2 = result.entities[1];
                         if (entity1 == null || entity2 == null) break;
@@ -134,12 +140,46 @@ namespace SlackathonMTL
 
         private void CheckForBroadcastAnswer(Message message)
         {
+            if (!message.Text.Contains("@"))
+                return;
+
+            string sub = message.Text.Substring(message.Text.IndexOf("@"));
+            string username = string.Empty;
+            if (sub.Contains(" "))
+            {
+                username = sub.Substring(1, sub.IndexOf(" ")-1);
+            }
+            else
+            {
+                username = sub.Substring(1);
+            }
+
+            Person asker = Person.GetAll().FirstOrDefault(p => p.Username == username);
+            if (asker == null || asker.Id == message.From.Id)
+                return;
+
+            List<Broadcast> currentBroadcasts = Broadcast.GetAll();
             
+            foreach (Broadcast broadcast in currentBroadcasts)
+            {
+                if (broadcast.Status != BroadcastStatus.WaitingForAnswer ||
+                    broadcast.Asker.Id != asker.Id)
+                    continue;
+
+                broadcast.Status = BroadcastStatus.WaitingForAnswer;
+
+                var connector = new ConnectorClient();
+                string answerer = "@" + message.From.Name;
+                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question. Is it a good answer?");
+                message.To = broadcast.Asker;
+                connector.Messages.SendMessage(message);
+                break;
+            }
         }
 
-        private Message BroadcastMessage(Subject subject, Message message)
+        private Message BroadcastMessage(string subjectName, Message message)
         {
-            Broadcast.Add(subject, message.From);
+            Broadcast.Add(subjectName, message.From);
             Message ack = message.CreateReplyMessage("broadcast done");
             return ack;
         }
@@ -150,14 +190,7 @@ namespace SlackathonMTL
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                subject = new Subject
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = subjectName
-                };
-                Subject.Add(subject);
-                Subject.Save();
-                return BroadcastMessage(subject, message);
+                return BroadcastMessage(subjectName, message);
             }
 
             List<Person> persons = Person.GetAll();
