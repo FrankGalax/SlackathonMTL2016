@@ -29,8 +29,8 @@ namespace SlackathonMTL
             {
                 CheckForNewUser(message);
 
-                CheckForBroadcastAnswer(message);
-                
+                if (CheckForBroadcastAnswer(message)) return null;
+
                 InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                 float prob = 0f;
                 IntentType intentType = IntentType.None;
@@ -67,7 +67,6 @@ namespace SlackathonMTL
                         break;
 
                     case IntentType.FindExpertiseForSubject:
-
                         entity1 = result.entities[0];
                         entity2 = result.entities[1];
                         if (entity1 == null || entity2 == null) break;
@@ -79,6 +78,21 @@ namespace SlackathonMTL
                         if (entity1.type == "Subject" && entity2.type == "Person")
                         {
                             return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
+                        }
+                        break;
+                    case IntentType.BroadcastAnswerAccept:
+                        entity1 = result.entities[0];
+                        if (entity1 != null && entity1.type == "Person")
+                        {
+                            return BroadcastAccept(entity1.GetEntityName(), message);
+                        }
+                        break;
+
+                    case IntentType.BroadcastAnswerDenied:
+                        entity1 = result.entities[0];
+                        if (entity1 != null && entity1.type == "Person")
+                        {
+                            return BroadcastDenied(message);
                         }
                         break;
                 }
@@ -148,10 +162,53 @@ namespace SlackathonMTL
             }
         }
 
-        private void CheckForBroadcastAnswer(Message message)
+
+        private Message BroadcastAccept(string userName, Message message)
+        {
+            Person person = Person.GetAll().FirstOrDefault(p => p.Username == userName);
+            if (person == null)
+            {
+                return message.CreateReplyMessage("unkown person", "en");
+            }
+
+            Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => b.Asker.Id == message.From.Id && b.Status == BroadcastStatus.WaitingForApproval);
+            if (broadcast == null)
+            {
+                return message.CreateReplyMessage("you have no open questions", "en");
+            }
+
+            Subject subject = Subject.GetAll().FirstOrDefault(s => s.Name == broadcast.SubjectName);
+            if (subject == null)
+            {
+                subject = new Subject { Id = Guid.NewGuid().ToString(), Name = broadcast.SubjectName };
+                Subject.Add(subject);
+                Subject.Save();
+            }
+
+            Matrix.SetPoints(person, subject, Matrix.GetPoints(person, subject) + 1);
+            Matrix.Save();
+
+            Broadcast.Remove(broadcast);
+
+            return message.CreateReplyMessage("duly noted");
+        }
+
+        private Message BroadcastDenied(Message message)
+        {
+            Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => b.Asker.Id == message.From.Id && b.Status == BroadcastStatus.WaitingForApproval);
+            if (broadcast == null)
+            {
+                return message.CreateReplyMessage("you have no open questions", "en");
+            }
+            broadcast.Status = BroadcastStatus.WaitingForAnswer;
+
+            return message.CreateReplyMessage("the search goes on");
+        }
+
+        private bool CheckForBroadcastAnswer(Message message)
         {
             if (!message.Text.Contains("@"))
-                return;
+                return false;
 
             string sub = message.Text.Substring(message.Text.IndexOf("@"));
             string username = string.Empty;
@@ -166,7 +223,7 @@ namespace SlackathonMTL
 
             Person asker = Person.GetAll().FirstOrDefault(p => p.Username == username);
             if (asker == null || asker.Id == message.From.Id)
-                return;
+                return false;
 
             List<Broadcast> currentBroadcasts = Broadcast.GetAll();
             
@@ -190,8 +247,9 @@ namespace SlackathonMTL
                 replyMessage.To = broadcast.Asker;
                 connector.Messages.SendMessage(replyMessage);
 
-                break;
+                return true;
             }
+            return false;
         }
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
