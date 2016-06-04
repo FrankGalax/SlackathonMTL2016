@@ -8,7 +8,7 @@ namespace SlackathonMTL.Model
 {
     public class Broadcast
     {
-        public Subject Subject;
+        public string SubjectName;
         public ChannelAccount Asker;
         public BroadcastStatus Status;
 
@@ -19,15 +19,10 @@ namespace SlackathonMTL.Model
             m_currentBroadcasts = new List<Broadcast>();
         }
 
-        public static void Add(Subject subject, ChannelAccount asker)
+        public static void Add(string subjectName, ChannelAccount asker)
         {
-            if (m_currentBroadcasts.FirstOrDefault(p =>
-                p.Asker.Id == asker.Id &&
-                p.Subject.Id == subject.Id) != null)
-                return;
-
             m_currentBroadcasts.Add(new Broadcast {
-                Subject = subject,
+                SubjectName = subjectName,
                 Asker = asker,
                 Status = BroadcastStatus.WaitingForAnswer
             });
@@ -41,7 +36,7 @@ namespace SlackathonMTL.Model
             m_currentBroadcasts.Remove(broadcast);
         }
 
-        public List<Broadcast> GetAll()
+        public static List<Broadcast> GetAll()
         {
             return m_currentBroadcasts;
         }
