@@ -26,16 +26,11 @@ namespace SlackathonMTL
             if (message.Type == "Message")
             {
                 CheckForNewUser(message);
-                
-                if (message.Text.Contains("@"))
-                {
-                    string sub = message.Text.Substring(message.Text.IndexOf("@"));
-                }
-                else
-                {
 
-                }
-                return FindExpert(message.Text, message);
+                InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
+
+                // return our reply to the user
+                return message.CreateReplyMessage($"You sent {length} characters");
             }
             else
             {
