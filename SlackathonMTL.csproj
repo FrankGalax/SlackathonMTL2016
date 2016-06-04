@@ -106,6 +106,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\Matrix.cs" />
+    <Compile Include="Model\MatrixEntry.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Reply.cs" />
     <Compile Include="Model\ReplyType.cs" />
@@ -117,8 +118,13 @@
     <Content Include="Data\persons.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\subjects.json" />
+    <Content Include="Data\subjects.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\replies.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\matrix.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Web.Debug.config">
