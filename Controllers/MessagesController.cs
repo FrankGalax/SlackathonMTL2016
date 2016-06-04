@@ -187,12 +187,16 @@ namespace SlackathonMTL
 
         private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
         {
-            Message ack = message.CreateReplyMessage($"broadcast done {accountsForId.Keys.Count}");
+            string res = "";
+            foreach (var entry in accountsForId)
+            {
+                res += $"{{{entry.Value.Id} {entry.Value.ChannelId} {entry.Value.Address} {entry.Value.IsBot} {entry.Value.Name}}} ";
+            }
+            Message ack = message.CreateReplyMessage($"broadcast done {res}");
 
             var connector = new ConnectorClient();
-            List<ChannelAccount> participants = new List<ChannelAccount>();
 
-            foreach (string user in accountsForId.Keys)
+            /*foreach (string user in accountsForId.Keys)
             {
                 Message broadcastMessage = new Message();
                 message.From = ack.From;
@@ -200,7 +204,7 @@ namespace SlackathonMTL
                 message.Language = "en";
                 message.To = accountsForId[user];
                 connector.Messages.SendMessage(message);
-            }
+            }*/
 
             return ack;
         }
