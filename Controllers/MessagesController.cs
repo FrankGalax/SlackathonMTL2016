@@ -28,9 +28,7 @@ namespace SlackathonMTL
                 CheckForNewUser(message);
 
                 InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
-
-                // return our reply to the user
-                return message.CreateReplyMessage($"You sent {length} characters");
+                return FindExpert(message.Text, message);
             }
             else
             {
