@@ -40,7 +40,7 @@ namespace SlackathonMTL
                     lock (megaLock)
                     {
                         if (!message.Text.StartsWith("/"))
-                            return null;
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
 
                         string[] parameters = message.Text.Split();
 
