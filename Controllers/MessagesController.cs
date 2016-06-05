@@ -263,20 +263,18 @@ namespace SlackathonMTL
 
                 string[] split = message.Text.Split(' ');
 
-                /*Regex rgx = new Regex(split[0]);
+                Regex rgx = new Regex(split[0]);
                 string answerString = rgx.Replace(message.Text, "", 1);
-                */
-                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = JsonConvert.SerializeObject(split) });
+                
+                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
-
-                string answerString = message.Text;
 
                 Message answerAck = message.CreateReplyMessage(answerer + ": ");
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text + JsonConvert.SerializeObject(split) + " - Is it a good answer?";
+                replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
                 connector.Messages.SendMessage(replyMessage);
