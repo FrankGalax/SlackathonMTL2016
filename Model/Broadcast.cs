@@ -11,7 +11,7 @@ namespace SlackathonMTL.Model
         public string SubjectName;
         public ChannelAccount Asker;
         public BroadcastStatus Status;
-        public ChannelAccount Answerer;
+        public Queue<BroadcastAnswer> Answers;
 
         private static List<Broadcast> m_currentBroadcasts;
 
@@ -25,7 +25,8 @@ namespace SlackathonMTL.Model
             m_currentBroadcasts.Add(new Broadcast {
                 SubjectName = subjectName,
                 Asker = asker,
-                Status = BroadcastStatus.WaitingForAnswer
+                Status = BroadcastStatus.WaitingForAnswer,
+                Answers = new Queue<BroadcastAnswer>()
             });
         }
 

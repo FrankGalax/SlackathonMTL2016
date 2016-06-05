@@ -111,6 +111,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\Broadcast.cs" />
+    <Compile Include="Model\BroadcastAnswer.cs" />
     <Compile Include="Model\BroadcastStatus.cs" />
     <Compile Include="Model\InterpretorResult.cs" />
     <Compile Include="Model\Matrix.cs" />

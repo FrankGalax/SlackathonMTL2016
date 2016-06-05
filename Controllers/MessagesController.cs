@@ -152,10 +152,13 @@ namespace SlackathonMTL
             }
         }
 
-
         private Message BroadcastAccept(Message message)
         {
-            Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => b.Asker.Id == message.From.Id && b.Status == BroadcastStatus.WaitingForApproval);
+            Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => 
+                b.Asker.Id == message.From.Id && 
+                b.Status == BroadcastStatus.WaitingForApproval &&
+                b.Answers.Count > 0
+            );
             if (broadcast == null)
             {
                 return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
@@ -169,7 +172,7 @@ namespace SlackathonMTL
                 Subject.Save();
             }
 
-            Person person = Person.GetAll().FirstOrDefault(p => p.Id == broadcast.Answerer.Id);
+            Person person = Person.GetAll().FirstOrDefault(p => p.Id == broadcast.Answers.First().Answerer.Id);
             if (person == null)
             {
                 return message.CreateReplyMessage("Something went horibly wrong, put the laptop down and run away!", "en");
@@ -224,7 +227,7 @@ namespace SlackathonMTL
                     continue;
 
                 broadcast.Status = BroadcastStatus.WaitingForApproval;
-                broadcast.Answerer = message.From;
+                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = message.Text });
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
 
