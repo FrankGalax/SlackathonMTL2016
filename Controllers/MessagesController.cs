@@ -332,6 +332,8 @@ namespace SlackathonMTL
             if (currentBroadcast.Recipients.Count <= 5 && currentBroadcast.Experts >= 0)
             { 
                 SendQuestionToAnswerers(messageString, currentBroadcast.Recipients, message, currentBroadcast.Experts);
+                ack.Text = Reply.GetReply(ReplyType.QuestionSubjectFound).Text;
+                connector.Messages.SendMessage(ack);
                 return true;
             }
 
@@ -345,6 +347,8 @@ namespace SlackathonMTL
                 connector.Messages.SendMessage(broadcastMessage);
             }
 
+            connector.Messages.SendMessage(ack);
+            ack.Text = Reply.GetReply(ReplyType.QuestionSubjectFound).Text;
             connector.Messages.SendMessage(ack);
 
             currentBroadcast.Status = BroadcastStatus.WaitingForAnswer;
