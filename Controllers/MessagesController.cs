@@ -316,7 +316,7 @@ namespace SlackathonMTL
 
             var connector = new ConnectorClient();
 
-            string messageString = $"@{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using {currentBroadcast.Asker.Name}";
+            string messageString = $"@{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using @{currentBroadcast.Asker.Name}";
 
             if (currentBroadcast.Recipients.Count <= 5 && currentBroadcast.Experts >= 0)
             { 
