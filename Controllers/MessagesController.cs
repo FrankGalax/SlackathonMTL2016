@@ -19,7 +19,7 @@ namespace SlackathonMTL
     public class MessagesController : ApiController
     {
         static Dictionary<string, ChannelAccount> accountsForId = new Dictionary<string, ChannelAccount>();
-        static Object megaLock;
+        static Object megaLock = new object();
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
