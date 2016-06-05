@@ -276,7 +276,7 @@ namespace SlackathonMTL
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
+                replyMessage.Text = answerAck.Text + JsonConvert.SerializeObject(split) + " - Is it a good answer?";
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
                 connector.Messages.SendMessage(replyMessage);
