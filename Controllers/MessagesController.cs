@@ -37,6 +37,8 @@ namespace SlackathonMTL
                         if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
                     }
 
+                    return message.CreateReplyMessage(JsonConvert.SerializeObject(message.Mentions));
+
                     InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                     float prob = 0f;
                     IntentType intentType = IntentType.None;
