@@ -303,11 +303,8 @@ namespace SlackathonMTL
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = Reply.GetReply(ReplyType.HasAnsweredMessage).Text;
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
-                connector.Messages.SendMessage(replyMessage);
-
                 replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
 
                 connector.Messages.SendMessage(replyMessage);

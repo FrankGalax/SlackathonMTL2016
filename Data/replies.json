@@ -56,15 +56,10 @@
 							  "EVERYONE was notified of your question.",
 							  "Your question was (at least) broadcasted in the entire office!"],
 
-	"IsGoodAnswerQuestion" : ["Was that a good answer ?",
-							  "Did that answer your question ?",
-							  "Was that statement accurate ?",
-							  "That answer was pretty good right ?"],
-	
-	"HasAnsweredMessage" : ["{0} has taken the time to reply.",
-							"{0} has answered your question! :clap:",
-						    "It is a great day {0} has answered! :pray:",
-						    "{0} answered :metal:"],
+	"IsGoodAnswerQuestion" : [" Was that a good answer ?",
+							  " Did that answer your question ?",
+							  " Was that statement accurate ?",
+							  " That answer was pretty good right ?"],
 	
 	"RefusedAnswerReply" : ["You are currently waiting for an answer...",
 							"Looking for more answer. :eyes:"],
