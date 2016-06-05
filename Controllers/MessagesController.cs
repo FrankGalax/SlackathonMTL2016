@@ -98,9 +98,7 @@ namespace SlackathonMTL
                             case IntentType.Thanks:
                                 return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
                             case IntentType.Goodbyes:
-                                Message gg = message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
-                                gg.Text = JsonConvert.SerializeObject(gg.BotUserData);
-                                return gg;
+                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
                         }
                     }
                 }
@@ -350,6 +348,7 @@ namespace SlackathonMTL
                 Message broadcastMessage = new Message();
                 broadcastMessage.From = ack.From;
                 broadcastMessage.Text = messageString;
+                broadcastMessage.Mentions.Add(new Mention(message.From));
                 broadcastMessage.Language = "en";
                 broadcastMessage.To = channelAccoutn;
                 connector.Messages.SendMessage(broadcastMessage);
@@ -417,6 +416,7 @@ namespace SlackathonMTL
                 questionMessage.From = ack.From;
                 questionMessage.Text = messageText;
                 questionMessage.Language = "en";
+                broadcastMessage.Mentions.Add(new Mention(message.From));
                 questionMessage.To = account;
                 connector.Messages.SendMessage(questionMessage);
             }
