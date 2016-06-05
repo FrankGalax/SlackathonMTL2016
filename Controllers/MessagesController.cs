@@ -263,10 +263,10 @@ namespace SlackathonMTL
 
                 string[] split = message.Text.Split(' ');
 
-                Regex rgx = new Regex(split[0]);
+                /*Regex rgx = new Regex(split[0]);
                 string answerString = rgx.Replace(message.Text, "", 1);
-
-                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
+                */
+                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = JsonConvert.SerializeObject(split) });
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
 
