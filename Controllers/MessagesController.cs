@@ -466,8 +466,8 @@ namespace SlackathonMTL
                     response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
                 }
             }
-            string reply = Reply.GetReply(ReplyType.FewExpertiseFound).Text + response.ToString();
-            return message.CreateReplyMessage(reply, "en");
+            
+            return message.CreateReplyMessage(response.ToString(), "en");
         }
 
         private Message FindExpertiseForSubject(string personName, string subjectName, Message message)
