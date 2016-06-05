@@ -294,10 +294,10 @@ namespace SlackathonMTL
 
             var connector = new ConnectorClient();
 
-            string messageString = $"{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" you can anwser him here using his user name";
+            string messageString = $"{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using {currentBroadcast.Asker.Name}";
 
-            if (currentBroadcast.Recipients.Count <= 5)
-            {
+            if (currentBroadcast.Recipients.Count <= 5 && currentBroadcast.Experts >= 0)
+            { 
                 SendQuestionToAnswerers(messageString, currentBroadcast.Recipients, message, currentBroadcast.Experts);
                 return true;
             }
@@ -329,9 +329,9 @@ namespace SlackathonMTL
                 recipients.Add(accountsForId[user]);
             }
 
-            Broadcast.Add(subjectName, message.From, recipients, 0);
+            Broadcast.Add(subjectName, message.From, recipients, -1);
 
-            Message ack = message.CreateReplyMessage($"And What was your question?");
+            Message ack = message.CreateReplyMessage($"And what was your question?");
             
             return ack;
         }
@@ -339,7 +339,7 @@ namespace SlackathonMTL
         private void SendQuestionToAnswerers(string messageText, List<ChannelAccount> potentialAnswerers, Message message, int experts)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("question sent to ");
+            builder.Append("Question sent to ");
             for(int i = 0; i < potentialAnswerers.Count; i++)
             {
                 if (i == 0)
@@ -352,17 +352,16 @@ namespace SlackathonMTL
                 else
                 {
                     builder.Append(" and ");
-
                 }
 
                 if (experts > 0)
                 {
-                    builder.Append(string.Format("{0} (Expert)", potentialAnswerers[i].Name));
+                    builder.Append(string.Format("@{0} (Expert)", potentialAnswerers[i].Name));
                     experts--;
                 }
                 else
                 {
-                    builder.Append(string.Format("{0} (Casual)", potentialAnswerers[i].Name));
+                    builder.Append(string.Format("@{0} (Casual)", potentialAnswerers[i].Name));
                 }
             }
 
@@ -448,7 +447,7 @@ namespace SlackathonMTL
             {
                 Broadcast.Add(subjectName, message.From, potentialAnswerers, experts.Count);
 
-                return message.CreateReplyMessage($"And What was your question?", "en");
+                return message.CreateReplyMessage($"And what was your question?", "en");
             }
             else
             {
