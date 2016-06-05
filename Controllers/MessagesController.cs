@@ -330,7 +330,7 @@ namespace SlackathonMTL
             {
                 if (first)
                 {
-                    first = false;
+                    first = false; 
                     builder.Append(string.Format("{0} (Choosen randomly)", randoms[i]));
                 }
                 else if (i == randoms.Count-1)
