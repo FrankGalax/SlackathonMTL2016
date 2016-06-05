@@ -30,7 +30,7 @@
 	
 	"NoExpertsFound" : ["I'm sorry my dear, but my research was vein :dizzy_face: ",
 						"Even my best sources could not help you :astonished:. Good luck in your endeavour.",
-						"/shrug Looks like you're on your own.",
+						"Looks like you're on your own. ¯\\_(ツ)_/¯",
 						"I find the lack of answers troubling. :tired_face:",
 						"I didn't find any experts, but here's a :cookie:"],
 	
@@ -58,7 +58,7 @@
 				   		"Thank you. :heart:"],
 
 	"UnknownPerson" : ["{0}, I've never heard of him :confused: ...",
-					   "/shrug I have no clue who {0} is... Sorry ?",
+					   "I have no clue who {0} is... Sorry ? ¯\\_(ツ)_/¯",
 					   "Typos, typos everywhere => {0} :smile:" ,
 					    "{0} ? Are you sure your spelling is right :smirk:"],
 	
@@ -104,6 +104,6 @@
 	"AnswererFeedbackNegative" : ["Your answer to {0} 's question was rejected.",
 								  "{0} didn't think your reply to his question was accurate",
 								  "{0} rejected your answer.",
-								  "/shrug {0} refused your answer... ",
+								  "{0} refused your answer... ¯\\_(ツ)_/¯ ",
 								  "{0} did not find your answer helpful :nail_care:"]
 }
