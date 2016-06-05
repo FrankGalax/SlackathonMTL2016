@@ -326,6 +326,8 @@ namespace SlackathonMTL
 
             string messageString = $"@{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using @{currentBroadcast.Asker.Name}";
 
+            currentBroadcast.Status = BroadcastStatus.WaitingForAnswer;
+
             if (currentBroadcast.Recipients.Count <= 5 && currentBroadcast.Experts >= 0)
             { 
                 SendQuestionToAnswerers(messageString, currentBroadcast.Recipients, message, currentBroadcast.Experts);
@@ -347,8 +349,6 @@ namespace SlackathonMTL
             connector.Messages.SendMessage(ack);
             ack.Text = Reply.GetReply(ReplyType.QuestionSubjectFound).Text;
             connector.Messages.SendMessage(ack);
-
-            currentBroadcast.Status = BroadcastStatus.WaitingForAnswer;
 
             return true;
         }
