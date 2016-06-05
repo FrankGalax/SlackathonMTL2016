@@ -25,69 +25,76 @@ namespace SlackathonMTL
         /// </summary>
         public async Task<Message> Post([FromBody]Message message)
         {
-            if (message.Type == "Message")
+            try
             {
-                CheckForNewUser(message);
-
-                if (CheckForBroadcastAnswer(message)) return null;
-
-                InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
-                float prob = 0f;
-                IntentType intentType = IntentType.None;
-
-                foreach (Intent intent in result.intents)
+                if (message.Type == "Message")
                 {
-                    if (intent.score > prob)
+                    CheckForNewUser(message);
+
+                    if (CheckForBroadcastAnswer(message)) return null;
+
+                    InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
+                    float prob = 0f;
+                    IntentType intentType = IntentType.None;
+
+                    foreach (Intent intent in result.intents)
                     {
-                        intentType = intent.GetIntentType();
-                        prob = intent.score;
+                        if (intent.score > prob)
+                        {
+                            intentType = intent.GetIntentType();
+                            prob = intent.score;
+                        }
+                    }
+                    Entity entity1;
+                    Entity entity2;
+                    switch (intentType)
+                    {
+                        case IntentType.None:
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
+
+                        case IntentType.FindAnExpert:
+                            entity1 = result.entities[0];
+                            if (entity1 != null && entity1.type == "Subject")
+                            {
+                                return FindExpert(entity1.GetEntityName(), message);
+                            }
+                            break;
+
+                        case IntentType.FindExpertise:
+                            entity1 = result.entities[0];
+                            if (entity1 != null && entity1.type == "Person")
+                            {
+                                return FindExpertise(entity1.GetEntityName(), message);
+                            }
+                            break;
+
+                        case IntentType.FindExpertiseForSubject:
+                            entity1 = result.entities[0];
+                            entity2 = result.entities[1];
+                            if (entity1 == null || entity2 == null) break;
+
+                            if (entity1.type == "Person" && entity2.type == "Subject")
+                            {
+                                return FindExpertiseForSubject(entity1.GetEntityName(), entity2.GetEntityName(), message);
+                            }
+                            if (entity1.type == "Subject" && entity2.type == "Person")
+                            {
+                                return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
+                            }
+                            break;
+                        case IntentType.BroadcastAnswerAccepted:
+                            return BroadcastAccept(message);
+
+                        case IntentType.BroadcastAnswerDenied:
+                            return BroadcastDenied(message);
                     }
                 }
-                Entity entity1;
-                Entity entity2;
-                switch (intentType)
-                {
-                    case IntentType.None:
-                        return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
-       
-                    case IntentType.FindAnExpert:
-                        entity1 = result.entities[0];
-                        if (entity1 != null && entity1.type == "Subject")
-                        {
-                            return FindExpert(entity1.GetEntityName(), message);
-                        }
-                        break;
-
-                    case IntentType.FindExpertise:
-                        entity1 = result.entities[0];
-                        if (entity1 != null && entity1.type == "Person")
-                        {
-                            return FindExpertise(entity1.GetEntityName(), message);
-                        }
-                        break;
-
-                    case IntentType.FindExpertiseForSubject:
-                        entity1 = result.entities[0];
-                        entity2 = result.entities[1];
-                        if (entity1 == null || entity2 == null) break;
-
-                        if (entity1.type == "Person" && entity2.type == "Subject")
-                        {
-                            return FindExpertiseForSubject(entity1.GetEntityName(), entity2.GetEntityName(), message);
-                        }
-                        if (entity1.type == "Subject" && entity2.type == "Person")
-                        {
-                            return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
-                        }
-                        break;
-                    case IntentType.BroadcastAnswerAccepted:
-                        return BroadcastAccept(message);
-                        
-                    case IntentType.BroadcastAnswerDenied:
-                        return BroadcastDenied(message);
-                }
+                return HandleSystemMessage(message);
             }
-            return HandleSystemMessage(message);
+            catch (Exception ex)
+            {
+                return message.CreateReplyMessage(ex.StackTrace, "en");
+            }
         }
 
         private Message HandleSystemMessage(Message message)
