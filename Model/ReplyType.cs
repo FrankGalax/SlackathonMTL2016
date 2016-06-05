@@ -10,8 +10,6 @@ namespace SlackathonMTL.Model
         None,
         Greetings,
         QuestionSubjectFound,
-        ManyExpertsFound,
-        FewExpertsFound,
         NoExpertsFound,
         ExpertiseFound,
         NoExpertiseFound,
@@ -19,7 +17,6 @@ namespace SlackathonMTL.Model
         UnknownPerson, // Person not in DB
         UnknownSubject, // Subject not in DB
         PointCount, // How many points does a person have for a given subject
-        BroadcastMessage, // Help call (broadcasted)
         BroadcastSentMessage, // Broadcast was sent
         IsGoodAnswerQuestion, // Is the given answer appropriate
         HasAnsweredMessage, // Person has answered message
