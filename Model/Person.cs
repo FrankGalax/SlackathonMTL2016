@@ -63,7 +63,7 @@ namespace SlackathonMTL.Model
         {
             Person p = m_persons.FirstOrDefault(pe => pe.Id == person.Id);
             if (p == null)
-                return;
+                return; 
             p.Username = person.Username;
         }
 
