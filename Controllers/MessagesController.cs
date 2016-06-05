@@ -348,7 +348,7 @@ namespace SlackathonMTL
                 Message broadcastMessage = new Message();
                 broadcastMessage.From = ack.From;
                 broadcastMessage.Text = messageString;
-                broadcastMessage.Mentions.Add(new Mention(message.From));
+                broadcastMessage.Mentions.Add(new Mention(message.From, "@" + message.From.Name));
                 broadcastMessage.Language = "en";
                 broadcastMessage.To = channelAccoutn;
                 connector.Messages.SendMessage(broadcastMessage);
@@ -416,7 +416,7 @@ namespace SlackathonMTL
                 questionMessage.From = ack.From;
                 questionMessage.Text = messageText;
                 questionMessage.Language = "en";
-                questionMessage.Mentions.Add(new Mention(message.From));
+                questionMessage.Mentions.Add(new Mention(message.From, "@"+message.From.Name));
                 questionMessage.To = account;
                 connector.Messages.SendMessage(questionMessage);
             }
