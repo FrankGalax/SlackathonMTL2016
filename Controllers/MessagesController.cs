@@ -302,12 +302,42 @@ namespace SlackathonMTL
             return ack;
         }
 
-        private Message SendQuestionToAnswerers(string subjectName, string messageText, List<ChannelAccount> potentialAnswerers, Message message)
+        private Message SendQuestionToAnswerers(string subjectName, string messageText, List<ChannelAccount> potentialAnswerers, Message message, List<string> experts, List<string> randoms)
         {
             Broadcast.Add(subjectName, message.From);
 
-            Message ack = message.CreateReplyMessage($"question sent to {potentialAnswerers.Count} users");
+            StringBuilder builder = new StringBuilder();
+            builder.Append("question sent to ");
+            bool first = true;
+            foreach (string expert in experts)
+            {
+                if (first)
+                {
+                    first = false;
+                    builder.Append(string.Format("{0} (Expert)", expert));
+                }
+                else
+                {
+                    builder.Append(string.Format(", {0} (Expert)", expert));
+                }
+            }
+            for (int i = 0; i < randoms.Count;++i)
+            {
+                if (first)
+                {
+                    builder.Append(string.Format("{0} (Choosen randomly)", randoms[i]));
+                }
+                else if (i == randoms.Count-1)
+                {
+                    builder.Append(string.Format(" and {0} (Choosen randomly)", randoms[i]));
+                }
+                else
+                {
+                    builder.Append(string.Format(", {0} (Choosen randomly)", randoms[i]));
+                }
+            }
 
+            Message ack = message.CreateReplyMessage(builder.ToString());
             var connector = new ConnectorClient();
 
             foreach (ChannelAccount account in potentialAnswerers)
@@ -349,6 +379,8 @@ namespace SlackathonMTL
             potentialExperts.Sort((p1, p2) => p2.Value - p1.Value);
 
             List<ChannelAccount> potentialAnswerers = new List<ChannelAccount>();
+            List<string> experts = new List<string>();
+            List<string> randoms = new List<string>();
             List<string> chosenIds = new List<string>();
             for (int i = 0; i < potentialExperts.Count && i < 3; ++i)
             {
@@ -357,6 +389,7 @@ namespace SlackathonMTL
                 {
                     chosenIds.Add(chosenId);
                     potentialAnswerers.Add(accountsForId[chosenId]);
+                    experts.Add("@" + accountsForId[chosenId].Name);
                 }
             }
 
@@ -379,11 +412,12 @@ namespace SlackathonMTL
             for (int i = 0; i < 5 - potentialAnswerers.Count && i < allIds.Count; ++i)
             {
                 potentialAnswerers.Add(accountsForId[allIds[i]]);
+                randoms.Add("@" + accountsForId[allIds[i]].Name);
             }
 
             if (potentialAnswerers.Count > 0)
             {
-                return SendQuestionToAnswerers(subjectName, question, potentialAnswerers, message);
+                return SendQuestionToAnswerers(subjectName, question, potentialAnswerers, message, experts, randoms);
             }
             else
             {
