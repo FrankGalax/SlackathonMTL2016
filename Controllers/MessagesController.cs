@@ -193,9 +193,31 @@ namespace SlackathonMTL
             {
                 return message.CreateReplyMessage("you have no open questions", "en");
             }
-            broadcast.Status = BroadcastStatus.WaitingForAnswer;
 
-            return message.CreateReplyMessage("the search goes on");
+            broadcast.Answers.Dequeue();
+            if (broadcast.Answers.Count == 0)
+            {
+                broadcast.Status = BroadcastStatus.WaitingForAnswer;
+                return message.CreateReplyMessage("the search goes on");
+            }
+            BroadcastAnswer nextAnswer = broadcast.Answers.First();
+
+            Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + " has responded to your question.");
+
+            ConnectorClient connector = new ConnectorClient();
+            Message replyMessage = new Message();
+            replyMessage.From = answerAck.From;
+            replyMessage.Text = answerAck.Text;
+            replyMessage.Language = "en";
+            replyMessage.To = broadcast.Asker;
+            connector.Messages.SendMessage(replyMessage);
+
+            replyMessage.Text = nextAnswer.MessageText;
+            connector.Messages.SendMessage(replyMessage);
+
+            replyMessage.Text = "Is it a good answer?";
+            connector.Messages.SendMessage(replyMessage);
+            return null;
         }
 
         private bool CheckForBroadcastAnswer(Message message)
@@ -222,9 +244,14 @@ namespace SlackathonMTL
             
             foreach (Broadcast broadcast in currentBroadcasts)
             {
-                if (broadcast.Status != BroadcastStatus.WaitingForAnswer ||
-                    broadcast.Asker.Id != asker.Id)
+                if (broadcast.Asker.Id != asker.Id)
                     continue;
+
+                if (broadcast.Status == BroadcastStatus.WaitingForApproval && broadcast.Answers.Count > 0)
+                {
+                    broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = message.Text });
+                    return true;
+                }
 
                 broadcast.Status = BroadcastStatus.WaitingForApproval;
                 broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = message.Text });
