@@ -1,80 +1,109 @@
 {
-  "None": [
-    "Pas du tout",
-    "Ah ben c'est ca",
-    "Wut"
-  ],
+	"None" : ["Did you say something ?",
+			  "I don't understand ... sorry.",
+			  "Was that a question ?",
+			  "I didn't quite understand that.",
+			  "Nah, I don't get it.",
+			  "Ping me next time you write something I understand. :sleeping:"],
 
-  "Greetings": [
-    "I'm blessed to be part of this discussion.",
-    "You shall be honoured by my presence.",
-    "Oh hi, everyone!",
-    "Happy to be of help!",
-    "I feel like a part of your team now :D"
-  ],
+	"Greetings" : ["I'm happy to be part of this discussion. :blush:",
+				   "I will be present at all times. :wink:",
+				   "Oh hi, everyone! :bowtie",
+				   "Happy to be of help!",
+				   "I feel like a part of your team now :smile:"],
 
-  "QuestionSubjectFound": [
-    "I'm going through my sources ... :eyes:",
-    "Would you like a :coffee: while I'm searching ?",
-    "Casually looking at details of your department :mag: ..."
-  ],
+	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
+							  "Would you like a :coffee: while I'm searching ?",
+							  "Casually looking at stuff :mag: ..."],
+	
 
 
+	"ManyExpertsFound" : ["I have just what you need :godmode: :",
+						  "Well well well; What do we have here :open_mouth: :",
+						  "I found these using my astute powers of deduction :squirrel: :",
+						  "Got to say I outdid myself this time :nail_care: :"],
 
-  "ManyExpertsFound": [
-    "I have just what you need :godmode: :",
-    "Well well well; What do we have here :mag: :",
-    "I found these using my astute powers of deduction :squirrel: :",
-    "Got to say I outdid myself this time :nail_care: :"
-  ],
-
-  "FewExpertsFound": [
-    "Perhaps these will be useful :",
-    "If my sources are accurate these will be good :",
-    "I was able to found these :",
-    "Your subject isn't very popular yet, but since I'm great I found :"
-  ],
-
-  "NoExpertsFound": [
-    "I'm sorry my dear, but my research was vein :'( ",
-    "Even my best sources could not help you. Good luck in your endeavour.",
-    "/shrug Looks like you're on your own.",
-    "I find the lack of answers troubling.",
-    "I didn't find any experts, but here's a :cookie:"
-  ],
+	"FewExpertsFound" : ["Perhaps these will be useful :pray: :",
+						 "If my sources are accurate these will be good :ok_hand: :",
+						 "I was able to found these :expressionless: :",
+						 "Your subject isn't very popular yet, but since I'm great (:dancer:) I found  :"],
+	
+	"NoExpertsFound" : ["I'm sorry my dear, but my research was vein :dizzy_face: ",
+						"Even my best sources could not help you :astonished:. Good luck in your endeavour.",
+						"/shrug Looks like you're on your own.",
+						"I find the lack of answers troubling. :tired_face:",
+						"I didn't find any experts, but here's a :cookie:"],
+	
 
 
-
-  "ManyExpertiseFound": [
-    "Impressive !",
-    "I wish I knew all of that !"
-  ],
-
-  "FewExpertiseFound": [
-    "They're not completly ignorant.",
-    "I've seen better, but this is okay... I guess."
-  ],
-
-  "NoExpertiseFound": [
-    "Nah, they're no good.",
-    "Better luck next time.",
-    "Seems like they aren't recognized in anything yet.",
-    "Sad ... Truly."
-  ],
+	"ManyExpertiseFound" : ["Impressive :open_mouth: !",
+							"I wish I knew all of that :neutral_face: !"],
+	
+	"FewExpertiseFound" : ["They're not completly ignorant. :clap:",
+						   "I've seen better, but this is okay... I guess. :smirk_cat:"],
+	
+	"NoExpertiseFound" : ["Nah, they're no good. :see_no_evil:",
+						  "Better luck next time. :crystal_ball:",
+						  "Seems like they aren't recognized in anything yet. :pensive:",
+						  "Sad ... Truly. :unamused:"],
 
 
 
-  "AcceptedAnswer": [
-    "This person is any good... huh",
-    "Oh interesting ... :black_nib:",
-    "Noted ! :pencil2:"
-  ],
+	"AcceptedAnswer" : ["This person is good ... :pencil2:",
+						"Oh interesting ... :black_nib:",
+						"Noted ! :pencil2:",
+						"So this person's an expert :smirk: thanks for the info.",
+				   		"Got to add this info to my list. :stuck_out_tongue:",
+				   		"Thank you for the info. :heart:",
+				   		"Thank you. :heart:"],
 
-  "Reference": [
-    "So this person's an expert :smirk: thanks for the info.",
-    "Oh my! Got to add this to my list.",
-    "Thank you for the information. I shall make great use of it.",
-    "You've just helped in more ways than one and for that I thank you.",
-    "Oh my! I don't know how I missed it! Thanks :P"
-  ]
+	"UnknownPerson" : ["%s, I've never heard of him :confused: ...",
+					   "/shrug I have no clue who %s is... Sorry ?",
+					   "Typos, typos everywhere => %s :smile:" ,
+					    "%s ? Are you sure your spelling is right :smirk:"],
+	
+	"UnknownSubject" : ["%s must be very interesting, but I'm afraid I've never heard of it :flushed:",
+					   ":worried: I don't know about this => %s.",
+					   "%s is not something I know about... :confused:.",
+					   "I was probably :sleeping: when then thought me about %s, because I don't remember it at all!",
+					   "This subject (%s) seems rather obscure :confounded: ..."],
+
+	"PointCount" : ["%s is not bad :neckbeard:, they have %s points for %s.",
+					"%s possesses %s points on %s.",
+					"User %s is pretty good with %s points in %s."],
+	
+	"BroadcastMessage" : ["%s is in a bad position and requires your help in : %s.",
+						  "User (%s) has some problem regarding %s.",
+						  "%s is in trouble can you help them with %s.",
+						  "%s would really appreciate get help regarding %s",
+						  "%s would really like get help regarding %s"],
+
+	"BroadcastSentMessage" : ["You just bothered everyone with your question!",
+							  "EVERYONE was notified of your question.",
+							  "Your question was (at least) broadcasted in the entire office!"],
+
+	"IsGoodAnswerQuestion" : ["Was that a good answer ?",
+							  "Did that answer your question ?",
+							  "Was that statement accurate ?",
+							  "That answer was pretty good right ?"],
+	
+	"HasAnsweredMessage" : ["%s has taken the time to reply.",
+							"%s has answered your question! :clap:",
+						    "It is a great day %s has answered! :pray:",
+						    "%s answered :metal:"],
+	
+	"RefusedAnswerReply" : ["You are currently waiting for an answer...",
+							"Looking for more answer. :eyes:"],
+
+	"AnswererFeedbackPositive" : ["Your answer was accepted by %s. :clap:",
+								  "What you said to %s was accepted. Well done sir.",
+								  "%s thought your answer was somewhat valuable to them.",
+								  "%s gave you a +1 because of your answer.",
+								  "What you told %s got you a point :grin:"],
+
+	"AnswererFeedbackNegative" : ["Your answer to %s 's question was rejected.",
+								  "%s didn't think your reply to his question was accurate",
+								  "%s rejected your answer.",
+								  "/shrug %s refused your answer... ",
+								  "%s did not find your answer helpful :nail_care:"]
 }

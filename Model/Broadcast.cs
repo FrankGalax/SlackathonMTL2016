@@ -10,7 +10,7 @@ namespace SlackathonMTL.Model
     {
         public string SubjectName;
         public ChannelAccount Asker;
-        public BroadcastStatus Status;
+        public BroadcastStatus Status; 
         public Queue<BroadcastAnswer> Answers;
         public List<ChannelAccount> Recipients;
         public int Experts;
