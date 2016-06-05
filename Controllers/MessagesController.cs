@@ -443,7 +443,7 @@ namespace SlackathonMTL
             foreach (var person in persons)
             {
                 int points = Matrix.GetPoints(person, subject);
-                if (points > 5)
+                if (points >= 5)
                 {
                     potentialExperts.Add(new KeyValuePair<Person, int>(person, points));
                 }
