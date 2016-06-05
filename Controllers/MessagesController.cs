@@ -416,7 +416,7 @@ namespace SlackathonMTL
                 questionMessage.From = ack.From;
                 questionMessage.Text = messageText;
                 questionMessage.Language = "en";
-                broadcastMessage.Mentions.Add(new Mention(message.From));
+                questionMessage.Mentions.Add(new Mention(message.From));
                 questionMessage.To = account;
                 connector.Messages.SendMessage(questionMessage);
             }
