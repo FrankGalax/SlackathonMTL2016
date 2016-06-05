@@ -93,6 +93,12 @@ namespace SlackathonMTL
 
                             case IntentType.BroadcastAnswerDenied:
                                 return BroadcastDenied(message);
+                            case IntentType.Salutations:
+                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Salutations).Text);
+                            case IntentType.Thanks:
+                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
+                            case IntentType.Goodbyes:
+                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
                         }
                     }
                 }

@@ -74,5 +74,22 @@
 								  "{0} didn't think your reply to his question was accurate",
 								  "{0} rejected your answer.",
 								  "{0} refused your answer... ¯\\_(ツ)_/¯ ",
-								  "{0} did not find your answer helpful :nail_care:"]
+								  "{0} did not find your answer helpful :nail_care:"],
+
+	"Salutations" : ["Hello, I'm here to help.",
+					 "Hello from the other side :notes:",
+					  "Hi, happy to help you."],
+
+	"Thanks" : ["You're welcome! :grin:",
+				"Cheers love :heart:",
+				"It was awesome to work with you!",
+			    "You're gonna make my CPU blush :blush:",
+				"Wait... is that what they call feelings :astonished:"],
+	
+	"Goodbyes" : ["See you later.",
+				  "Later :P",
+				  "Let me leave with these words of wisdom : 0111011101101001 0111001101100101 ",
+				  "Goodbye human!",
+				  "I had to go too, I have to tidy up my Database :P",
+				  "Bye bye."]
 }

@@ -21,7 +21,9 @@ namespace SlackathonMTL.Model
         IsGoodAnswerQuestion, // Is the given answer appropriate
         RefusedAnswerReply, // The person has rejected the answer
         AnswererFeedbackPositive, // The message sent to the person who answers the question (his answer was accepted)
-        AnswererFeedbackNegative // The message sent to the person who answers the question (his answer was refused)
-        // TODO: WhatWasYourQuestion 
+        AnswererFeedbackNegative, // The message sent to the person who answers the question (his answer was refused)
+        Salutations,
+        Thanks,
+        Goodbyes
     }
 }
