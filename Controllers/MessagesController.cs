@@ -259,7 +259,14 @@ namespace SlackathonMTL
                 }
 
                 broadcast.Status = BroadcastStatus.WaitingForApproval;
-                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = message.Text });
+
+
+                string[] split = message.Text.Split(' ');
+
+                Regex rgx = new Regex(split[0]);
+                string answerString = rgx.Replace(message.Text, "", 1);
+
+                broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
                 var connector = new ConnectorClient();
                 string answerer = "@" + message.From.Name;
 
