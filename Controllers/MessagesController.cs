@@ -217,19 +217,13 @@ namespace SlackathonMTL
                 ConnectorClient connector = new ConnectorClient();
 
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text;
+                replyMessage.Text = answerAck.Text + " [" + nextAnswer.MessageText + "]. Is it a good answer?";
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
                 if (replyMessage.From.Id == null)
                 {
                     replyMessage.From = message.To;
                 }
-                connector.Messages.SendMessage(replyMessage);
-
-                replyMessage.Text = nextAnswer.MessageText;
-                connector.Messages.SendMessage(replyMessage);
-
-                replyMessage.Text = "Is it a good answer?";
                 return replyMessage;
             }
             catch (Exception ex)
