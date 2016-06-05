@@ -223,8 +223,7 @@ namespace SlackathonMTL
             connector.Messages.SendMessage(replyMessage);
 
             replyMessage.Text = "Is it a good answer?";
-            connector.Messages.SendMessage(replyMessage);
-            return null;
+            return replyMessage;
         }
 
         private bool CheckForBroadcastAnswer(Message message)
