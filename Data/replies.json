@@ -48,6 +48,10 @@
 					"{0} possesses {1} points on {2}.",
 					"User {0} is pretty good with {1} points in {2}."],
 	
+  "NoPointCount" : ["{0} doesn't know anything about {1}.",
+					"{0} possesses 0 points on {1}.",
+					"User {0} probably can't help you with {1}."],
+
 	"BroadcastSentMessage" : ["You just bothered everyone with your question!",
 							  "EVERYONE was notified of your question.",
 							  "Your question was (at least) broadcasted in the entire office!"],

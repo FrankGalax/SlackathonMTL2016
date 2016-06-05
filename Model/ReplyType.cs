@@ -17,6 +17,7 @@ namespace SlackathonMTL.Model
         UnknownPerson, // Person not in DB
         UnknownSubject, // Subject not in DB
         PointCount, // How many points does a person have for a given subject
+        NoPointCount,
         BroadcastSentMessage, // Broadcast was sent
         IsGoodAnswerQuestion, // Is the given answer appropriate
         RefusedAnswerReply, // The person has rejected the answer
