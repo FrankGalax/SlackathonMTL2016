@@ -230,7 +230,7 @@ namespace SlackathonMTL
             }
             catch (Exception ex)
             {
-                throw new Exception($"ben {replyMessage.From.Id} {replyMessage.From.Id.Length} {replyMessage.From.Address} cest ca");
+                throw new Exception($"ben {replyMessage.From.Id == null} {replyMessage.From.Address == null} cest ca");
             }
         }
 
