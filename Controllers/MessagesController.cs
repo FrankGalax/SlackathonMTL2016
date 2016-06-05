@@ -37,8 +37,6 @@ namespace SlackathonMTL
                         if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
                     }
 
-                    return message.CreateReplyMessage(JsonConvert.SerializeObject(message.Mentions));
-
                     InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                     float prob = 0f;
                     IntentType intentType = IntentType.None;
@@ -350,6 +348,8 @@ namespace SlackathonMTL
                 Message broadcastMessage = new Message();
                 broadcastMessage.From = ack.From;
                 broadcastMessage.Text = messageString;
+                broadcastMessage.Mentions = new List<Mention>();
+                broadcastMessage.Mentions.Add(new Mention(message.From));
                 broadcastMessage.Language = "en";
                 broadcastMessage.To = channelAccoutn;
                 connector.Messages.SendMessage(broadcastMessage);
@@ -417,6 +417,8 @@ namespace SlackathonMTL
                 questionMessage.From = ack.From;
                 questionMessage.Text = messageText;
                 questionMessage.Language = "en";
+                questionMessage.Mentions = new List<Mention>();
+                questionMessage.Mentions.Add(new Mention(message.From));
                 questionMessage.To = account;
                 connector.Messages.SendMessage(questionMessage);
             }
@@ -441,7 +443,7 @@ namespace SlackathonMTL
             foreach (var person in persons)
             {
                 int points = Matrix.GetPoints(person, subject);
-                if (points >= 5)
+                if (points > 5)
                 {
                     potentialExperts.Add(new KeyValuePair<Person, int>(person, points));
                 }
