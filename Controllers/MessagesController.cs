@@ -526,7 +526,7 @@ namespace SlackathonMTL
             }
             else
             {
-                for (int i = 0; i < potentialExpertise.Count && i < 3; ++i)
+                for (int i = 0; i < potentialExpertise.Count; ++i)
                 {
                     if (i == 0)
                     {
