@@ -263,7 +263,7 @@ namespace SlackathonMTL
 
                 string[] split = message.Text.Split(' ');
 
-                Regex rgx = new Regex(split[0]);
+                Regex rgx = new Regex(split.FirstOrDefault(s => s.StartsWith("@")));
                 string answerString = rgx.Replace(message.Text, "", 1);
                 
                 broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
