@@ -139,14 +139,14 @@ namespace SlackathonMTL
                 person = new Person
                 {
                     Id = message.From.Id,
-                    Username = message.From.Name
+                    Username = "@" + message.From.Name
                 };
                 Person.Add(person);
                 Person.Save();
             }
             else if (message.From.Name != person.Username)
             {
-                person.Username = message.From.Name;
+                person.Username = "@" + message.From.Name;
                 Person.Update(person);
                 Person.Save();
             }
