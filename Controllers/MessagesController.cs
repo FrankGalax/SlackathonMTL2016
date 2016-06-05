@@ -269,7 +269,27 @@ namespace SlackathonMTL
                 broadcastMessage.To = accountsForId[user];
                 connector.Messages.SendMessage(broadcastMessage);
             }
+            
+            return ack;
+        }
 
+        private Message SendQuestionToAnswerers(string subjectName, string messageText, List<ChannelAccount> potentialAnswerers, Message message)
+        {
+            Broadcast.Add(subjectName, message.From);
+
+            Message ack = message.CreateReplyMessage($"question sent to {potentialAnswerers.Count} users");
+
+            var connector = new ConnectorClient();
+
+            foreach (ChannelAccount account in potentialAnswerers)
+            {
+                Message questionMessage = new Message();
+                questionMessage.From = ack.From;
+                questionMessage.Text = messageText;
+                questionMessage.Language = "en";
+                questionMessage.To = account;
+                connector.Messages.SendMessage(questionMessage);
+            }
 
             return ack;
         }
@@ -278,38 +298,68 @@ namespace SlackathonMTL
         {
             subjectName = subjectName.ToLower();
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
+            string question = $"@{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}";
             if (subject == null)
             {
-                return BroadcastMessage(subjectName, $"@{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}", message);
+                return BroadcastMessage(subjectName, question, message);
             }
 
-            List<Person> persons = Person.GetAll();
+            List<Person> persons = Person.GetAll().Where(p => p.Id != message.From.Id).ToList();
 
             List<KeyValuePair<Person, int>> potentialExperts = new List<KeyValuePair<Person, int>>();
 
             foreach (var person in persons)
             {
                 int points = Matrix.GetPoints(person, subject);
-                if (points > 0)
+                if (points > 5)
                 {
                     potentialExperts.Add(new KeyValuePair<Person, int>(person, points));
                 }
             }
+
             potentialExperts.Sort((p1, p2) => p2.Value - p1.Value);
 
-            StringBuilder response = new StringBuilder();
-            if (potentialExperts.Count == 0)
+            List<ChannelAccount> potentialAnswerers = new List<ChannelAccount>();
+            List<string> chosenIds = new List<string>();
+            for (int i = 0; i < potentialExperts.Count && i < 3; ++i)
             {
-                response.Append(Reply.GetReply(ReplyType.NoExpertsFound).Text);
+                string chosenId = potentialExperts[i].Key.Id;
+                if (accountsForId.ContainsKey(chosenId))
+                {
+                    chosenIds.Add(chosenId);
+                    potentialAnswerers.Add(accountsForId[chosenId]);
+                }
+            }
+
+            List<string> allIds = accountsForId.Keys.ToList();
+            allIds.Remove(message.From.Id);
+            foreach (string id in chosenIds)
+                allIds.Remove(id);
+
+            int n = allIds.Count;
+            Random random = new Random();
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                string value = allIds[k];
+                allIds[k] = allIds[n];
+                allIds[n] = value;
+            }
+
+            for (int i = 0; i < 5 - potentialAnswerers.Count && i < allIds.Count; ++i)
+            {
+                potentialAnswerers.Add(accountsForId[allIds[i]]);
+            }
+
+            if (potentialAnswerers.Count > 0)
+            {
+                return SendQuestionToAnswerers(subjectName, question, potentialAnswerers, message);
             }
             else
             {
-                for (int i = 0; i < potentialExperts.Count && i < 3; ++i)
-                {
-                    response.Append(string.Format($"{potentialExperts[i].Key.Username}\n"));
-                }
+                return message.CreateReplyMessage("There is no one to answer your question.", "en");
             }
-            return message.CreateReplyMessage(response.ToString(), "en");
         }
 
         private Message FindExpertise(string personName, Message message)
