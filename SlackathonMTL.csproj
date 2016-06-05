@@ -98,6 +98,9 @@
   <ItemGroup>
     <Content Include="Data\bot.jpg" />
     <Content Include="Data\conversation.jpg" />
+    <Content Include="Data\expertise.png" />
+    <Content Include="Data\question.png" />
+    <Content Include="Data\robot.png" />
     <Content Include="Data\team.jpg" />
     <Content Include="Data\wakow.png" />
     <Content Include="default.htm" />

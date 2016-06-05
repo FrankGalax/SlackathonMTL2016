@@ -4,11 +4,7 @@
 			  "Was that a question ?",
 			  "I didn't quite understand that."],
 
-	"Greetings" : ["I'm happy to be part of this discussion. :blush:",
-				   "I will be present at all times. :wink:",
-				   "Oh hi, everyone! :bowtie",
-				   "Happy to be of help!",
-				   "I feel like a part of your team now :smile:"],
+	"Greetings" : ["Go to our website : :point_right: http://wakow2.azurewebsites.net/ :point_left: to learn more about how to use Wakow!"],
 
 	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
 							  "Would you like a :coffee: while I'm searching ?",

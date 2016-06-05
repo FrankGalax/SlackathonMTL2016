@@ -126,6 +126,7 @@ namespace SlackathonMTL
             }
             else if (message.Type == "BotAddedToConversation")
             {
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Greetings).Text);
             }
             else if (message.Type == "BotRemovedFromConversation")
             {
