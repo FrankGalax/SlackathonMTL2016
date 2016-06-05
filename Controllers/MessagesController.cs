@@ -19,6 +19,7 @@ namespace SlackathonMTL
     public class MessagesController : ApiController
     {
         static Dictionary<string, ChannelAccount> accountsForId = new Dictionary<string, ChannelAccount>();
+        static Object megaLock;
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -29,9 +30,12 @@ namespace SlackathonMTL
             {
                 if (message.Type == "Message")
                 {
-                    CheckForNewUser(message);
+                    lock(megaLock)
+                    {
+                        CheckForNewUser(message);
 
-                    if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
+                        if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
+                    }
 
                     InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                     float prob = 0f;
@@ -47,46 +51,49 @@ namespace SlackathonMTL
                     }
                     Entity entity1;
                     Entity entity2;
-                    switch (intentType)
+                    lock (megaLock)
                     {
-                        case IntentType.None:
-                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
+                        switch (intentType)
+                        {
+                            case IntentType.None:
+                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
 
-                        case IntentType.FindAnExpert:
-                            entity1 = result.entities[0];
-                            if (entity1 != null && entity1.type == "Subject")
-                            {
-                                return FindExpert(entity1.GetEntityName(), message);
-                            }
-                            break;
+                            case IntentType.FindAnExpert:
+                                entity1 = result.entities[0];
+                                if (entity1 != null && entity1.type == "Subject")
+                                {
+                                    return FindExpert(entity1.GetEntityName(), message);
+                                }
+                                break;
 
-                        case IntentType.FindExpertise:
-                            entity1 = result.entities[0];
-                            if (entity1 != null && entity1.type == "Person")
-                            {
-                                return FindExpertise(entity1.GetEntityName(), message);
-                            }
-                            break;
+                            case IntentType.FindExpertise:
+                                entity1 = result.entities[0];
+                                if (entity1 != null && entity1.type == "Person")
+                                {
+                                    return FindExpertise(entity1.GetEntityName(), message);
+                                }
+                                break;
 
-                        case IntentType.FindExpertiseForSubject:
-                            entity1 = result.entities[0];
-                            entity2 = result.entities[1];
-                            if (entity1 == null || entity2 == null) break;
+                            case IntentType.FindExpertiseForSubject:
+                                entity1 = result.entities[0];
+                                entity2 = result.entities[1];
+                                if (entity1 == null || entity2 == null) break;
 
-                            if (entity1.type == "Person" && entity2.type == "Subject")
-                            {
-                                return FindExpertiseForSubject(entity1.GetEntityName(), entity2.GetEntityName(), message);
-                            }
-                            if (entity1.type == "Subject" && entity2.type == "Person")
-                            {
-                                return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
-                            }
-                            break;
-                        case IntentType.BroadcastAnswerAccepted:
-                            return BroadcastAccept(message);
+                                if (entity1.type == "Person" && entity2.type == "Subject")
+                                {
+                                    return FindExpertiseForSubject(entity1.GetEntityName(), entity2.GetEntityName(), message);
+                                }
+                                if (entity1.type == "Subject" && entity2.type == "Person")
+                                {
+                                    return FindExpertiseForSubject(entity2.GetEntityName(), entity1.GetEntityName(), message);
+                                }
+                                break;
+                            case IntentType.BroadcastAnswerAccepted:
+                                return BroadcastAccept(message);
 
-                        case IntentType.BroadcastAnswerDenied:
-                            return BroadcastDenied(message);
+                            case IntentType.BroadcastAnswerDenied:
+                                return BroadcastDenied(message);
+                        }
                     }
                 }
                 return HandleSystemMessage(message);
