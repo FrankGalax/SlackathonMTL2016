@@ -13,7 +13,7 @@ namespace SlackathonMTL.Model
         public BroadcastStatus Status;
         public Queue<BroadcastAnswer> Answers;
         public List<ChannelAccount> Recipients;
-
+        public int Experts;
         private static List<Broadcast> m_currentBroadcasts;
 
         static Broadcast()
@@ -21,14 +21,15 @@ namespace SlackathonMTL.Model
             m_currentBroadcasts = new List<Broadcast>();
         }
 
-        public static void Add(string subjectName, ChannelAccount asker, List<ChannelAccount> recipients)
+        public static void Add(string subjectName, ChannelAccount asker, List<ChannelAccount> recipients, int experts)
         {
             m_currentBroadcasts.Add(new Broadcast {
                 SubjectName = subjectName,
                 Asker = asker,
                 Status = BroadcastStatus.WaitingForQuestion,
                 Answers = new Queue<BroadcastAnswer>(),
-                Recipients = recipients
+                Recipients = recipients,
+                Experts = experts
             });
         }
 
