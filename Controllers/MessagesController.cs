@@ -81,20 +81,10 @@ namespace SlackathonMTL
                         }
                         break;
                     case IntentType.BroadcastAnswerAccepted:
-                        entity1 = result.entities[0];
-                        if (entity1 != null && entity1.type == "Person")
-                        {
-                            return BroadcastAccept(message);
-                        }
-                        break;
-
+                        return BroadcastAccept(message);
+                        
                     case IntentType.BroadcastAnswerDenied:
-                        entity1 = result.entities[0];
-                        if (entity1 != null && entity1.type == "Person")
-                        {
-                            return BroadcastDenied(message);
-                        }
-                        break;
+                        return BroadcastDenied(message);
                 }
             }
             return HandleSystemMessage(message);
