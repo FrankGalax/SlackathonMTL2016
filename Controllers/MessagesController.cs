@@ -190,7 +190,7 @@ namespace SlackathonMTL
 
             Broadcast.Remove(broadcast);
 
-            return message.CreateReplyMessage("duly noted");
+            return message.CreateReplyMessage(Reply.GetReply(ReplyType.AcceptedAnswer).Text, "en");
         }
 
         private Message BroadcastDenied(Message message)
@@ -198,14 +198,14 @@ namespace SlackathonMTL
             Broadcast broadcast = Broadcast.GetAll().FirstOrDefault(b => b.Asker.Id == message.From.Id && b.Status == BroadcastStatus.WaitingForApproval);
             if (broadcast == null)
             {
-                return message.CreateReplyMessage("you have no open questions", "en");
+                return message.CreateReplyMessage("You have no open questions.", "en");
             }
 
             broadcast.Answers.Dequeue();
             if (broadcast.Answers.Count == 0)
             {
                 broadcast.Status = BroadcastStatus.WaitingForAnswer;
-                return message.CreateReplyMessage("the search goes on");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.RefusedAnswerReply).Text, "en");
             }
             BroadcastAnswer nextAnswer = broadcast.Answers.First();
 
@@ -288,7 +288,7 @@ namespace SlackathonMTL
         {
             Broadcast.Add(subjectName, message.From);
 
-            Message ack = message.CreateReplyMessage($"broadcast done");
+            Message ack = message.CreateReplyMessage(Reply.GetReply(ReplyType.BroadcastSentMessage).Text, "en");
 
             var connector = new ConnectorClient();
 
@@ -437,7 +437,7 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage("unkown person", "en");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
             }
 
             List<Subject> subjects = Subject.GetAll();
@@ -466,7 +466,8 @@ namespace SlackathonMTL
                     response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
                 }
             }
-            return message.CreateReplyMessage(response.ToString(), "en");
+            string reply = Reply.GetReply(ReplyType.FewExpertiseFound).Text + response.ToString();
+            return message.CreateReplyMessage(reply, "en");
         }
 
         private Message FindExpertiseForSubject(string personName, string subjectName, Message message)
@@ -475,12 +476,12 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage("unkown person", "en");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
             }
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                return message.CreateReplyMessage("unkown subject", "en");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownSubject).Text, "en");
             }
 
             float points = Matrix.GetPoints(person, subject);
