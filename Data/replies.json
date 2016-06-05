@@ -12,7 +12,7 @@
 
 	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
 							  "Would you like a :coffee: while I'm searching ?",
-							  "Casually looking at stuff :mag: ..."],
+							  "looking for answers :mag: ..."],
 
 	"NoExpertsFound" : ["I'm sorry my dear, but no one is online :dizzy_face: ",
 						"All my best sources are offline right now :astonished:. Good luck in your endeavour.",
@@ -24,10 +24,10 @@
 						"They're not completly ignorant. :clap:",
 					    "I've seen better, but this is okay... I guess. :smirk_cat:"],
 	
-	"NoExpertiseFound" : ["Nah, they're no good. :see_no_evil:",
-						  "Better luck next time. :crystal_ball:",
+	"NoExpertiseFound" : ["There is nothing here. :see_no_evil:",
+						  "Unfortunatly, nothing.",
 						  "Seems like they aren't recognized in anything yet. :pensive:",
-						  "Sad ... Truly. :unamused:"],
+						  "Didn't find anything. :unamused:"],
 
 	"AcceptedAnswer" : ["This person is good ... :pencil2:",
 						"Oh interesting ... :black_nib:",
@@ -62,7 +62,7 @@
 							  " That answer was pretty good right ?"],
 	
 	"RefusedAnswerReply" : ["You are currently waiting for an answer...",
-							"Looking for more answer. :eyes:"],
+							"Looking for more answers. :eyes:"],
 
 	"AnswererFeedbackPositive" : ["Your answer was accepted by {0}. :clap:",
 								  "What you said to {0} was accepted.",
@@ -74,5 +74,22 @@
 								  "{0} didn't think your reply to his question was accurate",
 								  "{0} rejected your answer.",
 								  "{0} refused your answer... ¯\\_(ツ)_/¯ ",
-								  "{0} did not find your answer helpful :nail_care:"]
+								  "{0} did not find your answer helpful :nail_care:"],
+
+	"Salutations" : ["Hello, I'm here to help.",
+					 "Hello from the other side :notes:",
+					  "Hi, happy to help you."],
+
+	"Thanks" : ["You're welcome! :grin:",
+				"Cheers love :heart:",
+				"It was awesome to work with you!",
+			    "You're gonna make my CPU blush :blush:",
+				"Wait... is that what they call feelings :astonished:"],
+	
+	"Goodbyes" : ["See you later.",
+				  "Later :P",
+				  "Let me leave with these words of wisdom : 0111011101101001 0111001101100101 ",
+				  "Goodbye human!",
+				  "I had to go too, I have to tidy up my Database :P",
+				  "Bye bye."]
 }
