@@ -540,7 +540,7 @@ namespace SlackathonMTL
                         response.Append(" and ");
                     }
 
-                    response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
+                    response.Append(string.Format($"{potentialExpertise[i].Key.Name}"));
                 }
                 response.Append(". " + Reply.GetReply(ReplyType.ExpertiseFound).Text);
             }
