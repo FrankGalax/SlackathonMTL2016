@@ -303,11 +303,8 @@ namespace SlackathonMTL
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = Reply.GetReply(ReplyType.HasAnsweredMessage).Text;
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
-                connector.Messages.SendMessage(replyMessage);
-
                 replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
 
                 connector.Messages.SendMessage(replyMessage);
@@ -498,7 +495,7 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownPerson).Text, personName), "en");
             }
 
             List<Subject> subjects = Subject.GetAll();
@@ -522,7 +519,6 @@ namespace SlackathonMTL
             }
             else
             {
-                response.Append(Reply.GetReply(ReplyType.ExpertiseFound).Text +": ");
                 for (int i = 0; i < potentialExpertise.Count && i < 3; ++i)
                 {
                     if (i == 0)
@@ -539,8 +535,9 @@ namespace SlackathonMTL
 
                     response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
                 }
+                response.Append(". " + Reply.GetReply(ReplyType.ExpertiseFound).Text);
             }
-            
+
             return message.CreateReplyMessage(response.ToString(), "en");
         }
 
@@ -550,12 +547,12 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownPerson).Text, personName), "en");
             }
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownSubject).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownSubject).Text, subjectName), "en");
             }
 
             float points = Matrix.GetPoints(person, subject);

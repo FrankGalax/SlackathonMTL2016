@@ -19,7 +19,6 @@ namespace SlackathonMTL.Model
         PointCount, // How many points does a person have for a given subject
         BroadcastSentMessage, // Broadcast was sent
         IsGoodAnswerQuestion, // Is the given answer appropriate
-        HasAnsweredMessage, // Person has answered message
         RefusedAnswerReply, // The person has rejected the answer
         AnswererFeedbackPositive, // The message sent to the person who answers the question (his answer was accepted)
         AnswererFeedbackNegative // The message sent to the person who answers the question (his answer was refused)
