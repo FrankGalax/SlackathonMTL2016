@@ -204,11 +204,11 @@ namespace SlackathonMTL
             string username = string.Empty;
             if (sub.Contains(" "))
             {
-                username = sub.Substring(1, sub.IndexOf(" ")-1);
+                username = sub.Substring(0, sub.IndexOf(" "));
             }
             else
             {
-                username = sub.Substring(1);
+                username = sub;
             }
 
             Person asker = Person.GetAll().FirstOrDefault(p => p.Username == username);
@@ -298,7 +298,7 @@ namespace SlackathonMTL
         {
             subjectName = subjectName.ToLower();
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
-            string question = $"@{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}";
+            string question = $"{Person.GetAll().FirstOrDefault(p => p.Id == message.From.Id).Username} needs help with {subjectName}";
             if (subject == null)
             {
                 return BroadcastMessage(subjectName, question, message);
