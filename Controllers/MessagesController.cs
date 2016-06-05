@@ -209,7 +209,7 @@ namespace SlackathonMTL
             }
             BroadcastAnswer nextAnswer = broadcast.Answers.First();
 
-            Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + " has responded to your question.");
+            Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + ": ");
 
             Message replyMessage = new Message();
             try
@@ -217,7 +217,7 @@ namespace SlackathonMTL
                 ConnectorClient connector = new ConnectorClient();
 
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text + " [" + nextAnswer.MessageText + "]. Is it a good answer?";
+                replyMessage.Text = answerAck.Text + nextAnswer.MessageText + " - Is it a good answer?";
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
                 if (replyMessage.From.Id == null)
@@ -272,19 +272,13 @@ namespace SlackathonMTL
 
                 string answerString = message.Text;
 
-                Message answerAck = message.CreateReplyMessage(answerer + " has responded to your question.");
+                Message answerAck = message.CreateReplyMessage(answerer + ": ");
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text;
+                replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
-                connector.Messages.SendMessage(replyMessage);
-
-                replyMessage.Text = answerString;
-                connector.Messages.SendMessage(replyMessage);
-
-                replyMessage.Text = "Is it a good answer?";
                 connector.Messages.SendMessage(replyMessage);
 
                 return true;
