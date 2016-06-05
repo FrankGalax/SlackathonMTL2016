@@ -215,6 +215,7 @@ namespace SlackathonMTL
             try
             {
                 ConnectorClient connector = new ConnectorClient();
+
                 replyMessage.From = answerAck.From;
                 replyMessage.Text = answerAck.Text;
                 replyMessage.Language = "en";
@@ -229,7 +230,7 @@ namespace SlackathonMTL
             }
             catch (Exception ex)
             {
-                throw new Exception($"{replyMessage.From == null} {replyMessage.Text == null} {replyMessage.Language} {replyMessage.To == null}");
+                throw new Exception($"{replyMessage.From.Id} {replyMessage.Text} {replyMessage.Language} {replyMessage.To.Id}");
             }
         }
 
