@@ -209,17 +209,21 @@ namespace SlackathonMTL
             }
             BroadcastAnswer nextAnswer = broadcast.Answers.First();
 
-            //Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + " has responded to your question.");
+            Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + " has responded to your question.");
 
             Message replyMessage = new Message();
             try
             {
                 ConnectorClient connector = new ConnectorClient();
 
-                replyMessage.From = broadcast.Answers.First().Answerer;
-                replyMessage.Text = "@" + nextAnswer.Answerer.Name + " has responded to your question.";
+                replyMessage.From = answerAck.From;
+                replyMessage.Text = answerAck.Text;
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
+                if (replyMessage.From.Id == null)
+                {
+                    replyMessage.From = message.To;
+                }
                 connector.Messages.SendMessage(replyMessage);
 
                 replyMessage.Text = nextAnswer.MessageText;
