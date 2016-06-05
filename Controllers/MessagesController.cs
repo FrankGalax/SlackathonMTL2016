@@ -98,8 +98,9 @@ namespace SlackathonMTL
                             case IntentType.Thanks:
                                 return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
                             case IntentType.Goodbyes:
-                                message.To.Name = "Wakow";
-                                return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
+                                Message gg = message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
+                                gg.Text = JsonConvert.SerializeObject(gg);
+                                return gg;
                         }
                     }
                 }
