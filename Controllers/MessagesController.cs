@@ -197,7 +197,7 @@ namespace SlackathonMTL
                 var ackMessage = new Message();
                 ackMessage.From = message.To;
                 ackMessage.To = answererAccount;
-                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackPositive).Text, "@" + answererAccount.Name);
+                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackPositive).Text, "@" + broadcast.Asker.Name);
                 ackMessage.Language = "en";
                 connector.Messages.SendMessage(ackMessage);
             }
@@ -220,7 +220,7 @@ namespace SlackathonMTL
                 var ackMessage = new Message();
                 ackMessage.From = message.To;
                 ackMessage.To = answererAccount;
-                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackNegative).Text, "@" + answererAccount.Name);
+                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackNegative).Text, "@" + broadcast.Asker.Name);
                 ackMessage.Language = "en";
                 connector.Messages.SendMessage(ackMessage);
             }
