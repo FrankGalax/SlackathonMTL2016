@@ -37,7 +37,55 @@ namespace SlackathonMTL
                         if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
                     }
 
-                    InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
+                    lock (megaLock)
+                    {
+                        if (!message.Text.StartsWith("/"))
+                            return null;
+
+                        string[] parameters = message.Text.Split();
+
+                        string command = parameters[0];
+                        string entity1 = parameters.Length > 1 ? parameters[1] : null;
+                        string entity2 = parameters.Length > 2 ? parameters[2] : null;
+
+                        if (command == "/findExpert")
+                        {
+                            return FindExpert(entity1, message);
+                        }
+                        else if (command == "/findExpertise")
+                        {
+                            return FindExpertise(entity1, message);
+                        }
+                        else if (command == "/findExpertiseForSubject")
+                        {
+                            return FindExpertiseForSubject(entity1, entity2, message);
+                        }
+                        else if (command == "/answerAccept")
+                        {
+                            return BroadcastAccept(message);
+                        }
+                        else if (command == "/answerDeny")
+                        {
+                            return BroadcastDenied(message);
+                        }
+                        else if (command == "/hello")
+                        {
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.Salutations).Text);
+                        }
+                        else if (command == "/thanks")
+                        {
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
+                        }
+                        else if (command == "/bye")
+                        {
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
+                        }
+                        else
+                        {
+                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
+                        }
+                    }
+                    /*InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                     float prob = 0f;
                     IntentType intentType = IntentType.None;
 
@@ -100,7 +148,7 @@ namespace SlackathonMTL
                             case IntentType.Goodbyes:
                                 return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
                         }
-                    }
+                    }*/
                 }
                 return HandleSystemMessage(message);
             }
