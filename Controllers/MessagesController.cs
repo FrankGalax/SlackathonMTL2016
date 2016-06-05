@@ -93,7 +93,7 @@ namespace SlackathonMTL
             }
             catch (Exception ex)
             {
-                return message.CreateReplyMessage(ex.StackTrace, "en");
+                return message.CreateReplyMessage(ex.Message + " " + ex.StackTrace, "en");
             }
         }
 
