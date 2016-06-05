@@ -31,7 +31,7 @@ namespace SlackathonMTL
                 {
                     CheckForNewUser(message);
 
-                    if (CheckForBroadcastAnswer(message)) return null;
+                    if (CheckForBroadcastAnswer(message) || CheckForBroadcastPendingQuestion(message)) return null;
 
                     InterpretorResult result = await MessageInterpretor.InterpretMessage(message.Text);
                     float prob = 0f;
@@ -284,62 +284,85 @@ namespace SlackathonMTL
             return false;
         }
 
-        private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
+        private bool CheckForBroadcastPendingQuestion(Message message)
         {
-            Broadcast.Add(subjectName, message.From);
+            Broadcast currentBroadcast = Broadcast.GetAll().FirstOrDefault(b => b.Status == BroadcastStatus.WaitingForQuestion && b.Asker.Id == message.From.Id);
+
+            if (currentBroadcast == null) return false;
 
             Message ack = message.CreateReplyMessage($"broadcast done");
 
             var connector = new ConnectorClient();
 
+            string messageString = $"{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" you can anwser him here using his user name";
+
+            if (currentBroadcast.Recipients.Count <= 5)
+            {
+                SendQuestionToAnswerers(messageString, currentBroadcast.Recipients, message, currentBroadcast.Experts);
+                return true;
+            }
+
+            foreach (ChannelAccount channelAccoutn in currentBroadcast.Recipients)
+            {
+                Message broadcastMessage = new Message();
+                broadcastMessage.From = ack.From;
+                broadcastMessage.Text = messageString;
+                broadcastMessage.Language = "en";
+                broadcastMessage.To = channelAccoutn;
+                connector.Messages.SendMessage(broadcastMessage);
+            }
+
+            connector.Messages.SendMessage(ack);
+
+            currentBroadcast.Status = BroadcastStatus.WaitingForAnswer;
+
+            return true;
+        }
+
+        private Message BroadcastMessage(string subjectName, string broadcastText, Message message)
+        {
+            List<ChannelAccount> recipients = new List<ChannelAccount>();
             foreach (string user in accountsForId.Keys)
             {
                 if (accountsForId[user].Id == message.From.Id) continue;
 
-                Message broadcastMessage = new Message();
-                broadcastMessage.From = ack.From;
-                broadcastMessage.Text = broadcastText;
-                broadcastMessage.Language = "en";
-                broadcastMessage.To = accountsForId[user];
-                connector.Messages.SendMessage(broadcastMessage);
+                recipients.Add(accountsForId[user]);
             }
+
+            Broadcast.Add(subjectName, message.From, recipients, 0);
+
+            Message ack = message.CreateReplyMessage($"And What was your question?");
             
             return ack;
         }
 
-        private Message SendQuestionToAnswerers(string subjectName, string messageText, List<ChannelAccount> potentialAnswerers, Message message, List<string> experts, List<string> randoms)
+        private void SendQuestionToAnswerers(string messageText, List<ChannelAccount> potentialAnswerers, Message message, int experts)
         {
-            Broadcast.Add(subjectName, message.From);
-
             StringBuilder builder = new StringBuilder();
             builder.Append("question sent to ");
-            bool first = true;
-            foreach (string expert in experts)
+            for(int i = 0; i < potentialAnswerers.Count; i++)
             {
-                if (first)
+                if (i == 0)
                 {
-                    first = false;
-                    builder.Append(string.Format("{0} (Expert)", expert));
+                }
+                else if (i < potentialAnswerers.Count - 1)
+                {
+                    builder.Append(", ");
                 }
                 else
                 {
-                    builder.Append(string.Format(", {0} (Expert)", expert));
+                    builder.Append(" and ");
+
                 }
-            }
-            for (int i = 0; i < randoms.Count;++i)
-            {
-                if (first)
+
+                if (experts > 0)
                 {
-                    first = false; 
-                    builder.Append(string.Format("{0} (Casual)", randoms[i]));
-                }
-                else if (i == randoms.Count-1)
-                {
-                    builder.Append(string.Format(" and {0} (Casual)", randoms[i]));
+                    builder.Append(string.Format("{0} (Expert)", potentialAnswerers[i].Name));
+                    experts--;
                 }
                 else
                 {
-                    builder.Append(string.Format(", {0} (Casual)", randoms[i]));
+                    builder.Append(string.Format("{0} (Casual)", potentialAnswerers[i].Name));
                 }
             }
 
@@ -356,7 +379,7 @@ namespace SlackathonMTL
                 connector.Messages.SendMessage(questionMessage);
             }
 
-            return ack;
+            connector.Messages.SendMessage(ack);
         }
 
         private Message FindExpert(string subjectName, Message message)
@@ -423,7 +446,9 @@ namespace SlackathonMTL
 
             if (potentialAnswerers.Count > 0)
             {
-                return SendQuestionToAnswerers(subjectName, question, potentialAnswerers, message, experts, randoms);
+                Broadcast.Add(subjectName, message.From, potentialAnswerers, experts.Count);
+
+                return message.CreateReplyMessage($"And What was your question?", "en");
             }
             else
             {

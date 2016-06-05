@@ -7,6 +7,7 @@ namespace SlackathonMTL.Model
 {
     public enum BroadcastStatus
     {
+        WaitingForQuestion,
         WaitingForAnswer,
         WaitingForApproval
     }
