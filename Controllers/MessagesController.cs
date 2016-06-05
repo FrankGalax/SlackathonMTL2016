@@ -495,7 +495,7 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownPerson).Text, personName), "en");
             }
 
             List<Subject> subjects = Subject.GetAll();
@@ -547,12 +547,12 @@ namespace SlackathonMTL
             Person person = Person.GetAll().FirstOrDefault(p => p.Username.ToLower() == personName);
             if (person == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownPerson).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownPerson).Text, personName), "en");
             }
             Subject subject = Subject.GetAll().FirstOrDefault(p => p.Name == subjectName);
             if (subject == null)
             {
-                return message.CreateReplyMessage(Reply.GetReply(ReplyType.UnknownSubject).Text, "en");
+                return message.CreateReplyMessage(String.Format(Reply.GetReply(ReplyType.UnknownSubject).Text, subjectName), "en");
             }
 
             float points = Matrix.GetPoints(person, subject);
