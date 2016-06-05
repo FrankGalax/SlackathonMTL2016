@@ -2,9 +2,7 @@
 	"None" : ["Did you say something ?",
 			  "I don't understand ... sorry.",
 			  "Was that a question ?",
-			  "I didn't quite understand that.",
-			  "Nah, I don't get it.",
-			  "Ping me next time you write something I understand. :sleeping:"],
+			  "I didn't quite understand that."],
 
 	"Greetings" : ["I'm happy to be part of this discussion. :blush:",
 				   "I will be present at all times. :wink:",
@@ -15,39 +13,21 @@
 	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
 							  "Would you like a :coffee: while I'm searching ?",
 							  "Casually looking at stuff :mag: ..."],
-	
 
-
-	"ManyExpertsFound" : ["I have just what you need :godmode: :",
-						  "Well well well; What do we have here :open_mouth: :",
-						  "I found these using my astute powers of deduction :squirrel: :",
-						  "Got to say I outdid myself this time :nail_care: :"],
-
-	"FewExpertsFound" : ["Perhaps these will be useful :pray: :",
-						 "If my sources are accurate these will be good :ok_hand: :",
-						 "I was able to found these :expressionless: :",
-						 "Your subject isn't very popular yet, but since I'm great (:dancer:) I found  :"],
-	
-	"NoExpertsFound" : ["I'm sorry my dear, but my research was vein :dizzy_face: ",
-						"Even my best sources could not help you :astonished:. Good luck in your endeavour.",
+	"NoExpertsFound" : ["I'm sorry my dear, but no one is online :dizzy_face: ",
+						"All my best sources are offline right now :astonished:. Good luck in your endeavour.",
 						"Looks like you're on your own. ¯\\_(ツ)_/¯",
-						"I find the lack of answers troubling. :tired_face:",
-						"I didn't find any experts, but here's a :cookie:"],
-	
+						"I didn't find any experts, but here's a cookie : :cookie:"],
 
-
-	"ManyExpertiseFound" : ["Impressive :open_mouth: !",
-							"I wish I knew all of that :neutral_face: !"],
-	
-	"FewExpertiseFound" : ["They're not completly ignorant. :clap:",
-						   "I've seen better, but this is okay... I guess. :smirk_cat:"],
+	"ExpertiseFound" : ["Impressive :open_mouth: !",
+						"I wish I knew all of that :neutral_face: !",
+						"They're not completly ignorant. :clap:",
+					    "I've seen better, but this is okay... I guess. :smirk_cat:"],
 	
 	"NoExpertiseFound" : ["Nah, they're no good. :see_no_evil:",
 						  "Better luck next time. :crystal_ball:",
 						  "Seems like they aren't recognized in anything yet. :pensive:",
 						  "Sad ... Truly. :unamused:"],
-
-
 
 	"AcceptedAnswer" : ["This person is good ... :pencil2:",
 						"Oh interesting ... :black_nib:",
@@ -72,12 +52,6 @@
 					"{0} possesses {1} points on {2}.",
 					"User {0} is pretty good with {1} points in {2}."],
 	
-	"BroadcastMessage" : ["{0} is in a bad position and requires your help in : {1}.",
-						  "User ({0}) has some problem regarding {1}.",
-						  "{0} is in trouble can you help them with {1}.",
-						  "{0} would really appreciate get help regarding {1}",
-						  "{0} would really like get help regarding {1}"],
-
 	"BroadcastSentMessage" : ["You just bothered everyone with your question!",
 							  "EVERYONE was notified of your question.",
 							  "Your question was (at least) broadcasted in the entire office!"],
