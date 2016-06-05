@@ -213,6 +213,18 @@ namespace SlackathonMTL
                 return message.CreateReplyMessage("You have no open questions.", "en");
             }
 
+            ChannelAccount answererAccount = broadcast.Answers.First().Answerer;
+            var connector = new ConnectorClient();
+            if (answererAccount != null)
+            {
+                var ackMessage = new Message();
+                ackMessage.From = message.To;
+                ackMessage.To = answererAccount;
+                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackNegative).Text, "@" + answererAccount.Name);
+                ackMessage.Language = "en";
+                connector.Messages.SendMessage(ackMessage);
+            }
+
             broadcast.Answers.Dequeue();
             if (broadcast.Answers.Count == 0)
             {
@@ -224,7 +236,6 @@ namespace SlackathonMTL
             Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + ": ");
 
             Message replyMessage = new Message();
-            ConnectorClient connector = new ConnectorClient();
 
             replyMessage.From = answerAck.From;
             replyMessage.Text = answerAck.Text + nextAnswer.MessageText + " - Is it a good answer?";
