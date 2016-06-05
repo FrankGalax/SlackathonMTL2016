@@ -330,15 +330,16 @@ namespace SlackathonMTL
             {
                 if (first)
                 {
-                    builder.Append(string.Format("{0} (Choosen randomly)", randoms[i]));
+                    first = false; 
+                    builder.Append(string.Format("{0} (Casual)", randoms[i]));
                 }
                 else if (i == randoms.Count-1)
                 {
-                    builder.Append(string.Format(" and {0} (Choosen randomly)", randoms[i]));
+                    builder.Append(string.Format(" and {0} (Casual)", randoms[i]));
                 }
                 else
                 {
-                    builder.Append(string.Format(", {0} (Choosen randomly)", randoms[i]));
+                    builder.Append(string.Format(", {0} (Casual)", randoms[i]));
                 }
             }
 
