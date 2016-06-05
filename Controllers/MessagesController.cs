@@ -99,8 +99,7 @@ namespace SlackathonMTL
                                 return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
                             case IntentType.Goodbyes:
                                 Message gg = message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
-                                gg.From.IsBot = false;
-                                gg.Text = JsonConvert.SerializeObject(gg);
+                                gg.Text = JsonConvert.SerializeObject(gg.BotUserData);
                                 return gg;
                         }
                     }
