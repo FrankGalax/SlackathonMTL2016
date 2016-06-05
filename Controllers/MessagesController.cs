@@ -190,6 +190,18 @@ namespace SlackathonMTL
 
             Broadcast.Remove(broadcast);
 
+            ChannelAccount answererAccount = accountsForId.ContainsKey(person.Id) ? accountsForId[person.Id] : null;
+            if (answererAccount != null)
+            {
+                var connector = new ConnectorClient();
+                var ackMessage = new Message();
+                ackMessage.From = message.To;
+                ackMessage.To = answererAccount;
+                ackMessage.Text = string.Format(Reply.GetReply(ReplyType.AnswererFeedbackPositive).Text, "@" + answererAccount.Name);
+                ackMessage.Language = "en";
+                connector.Messages.SendMessage(ackMessage);
+            }
+
             return message.CreateReplyMessage(Reply.GetReply(ReplyType.AcceptedAnswer).Text, "en");
         }
 
