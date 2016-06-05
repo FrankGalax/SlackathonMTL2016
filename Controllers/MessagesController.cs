@@ -519,7 +519,6 @@ namespace SlackathonMTL
             }
             else
             {
-                response.Append(Reply.GetReply(ReplyType.ExpertiseFound).Text +": ");
                 for (int i = 0; i < potentialExpertise.Count && i < 3; ++i)
                 {
                     if (i == 0)
@@ -536,8 +535,9 @@ namespace SlackathonMTL
 
                     response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
                 }
+                response.Append(". " + Reply.GetReply(ReplyType.ExpertiseFound).Text);
             }
-            
+
             return message.CreateReplyMessage(response.ToString(), "en");
         }
 
