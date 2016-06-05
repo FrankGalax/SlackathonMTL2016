@@ -618,7 +618,6 @@ namespace SlackathonMTL
                 response.Append(string.Format(Reply.GetReply(ReplyType.NoPointCount).Text, person.Username, subject.Name));
                 return message.CreateReplyMessage(response.ToString(), "en");
             }
-
             response.Append(string.Format(Reply.GetReply(ReplyType.PointCount).Text, person.Username, points, subject.Name));
             return message.CreateReplyMessage(response.ToString(), "en");
         }
