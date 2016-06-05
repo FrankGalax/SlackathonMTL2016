@@ -12,7 +12,7 @@
 
 	"QuestionSubjectFound" : ["I'm going through my sources ... :eyes:",
 							  "Would you like a :coffee: while I'm searching ?",
-							  "Casually looking at stuff :mag: ..."],
+							  "looking for answers :mag: ..."],
 
 	"NoExpertsFound" : ["I'm sorry my dear, but no one is online :dizzy_face: ",
 						"All my best sources are offline right now :astonished:. Good luck in your endeavour.",
@@ -62,7 +62,7 @@
 							  " That answer was pretty good right ?"],
 	
 	"RefusedAnswerReply" : ["You are currently waiting for an answer...",
-							"Looking for more answer. :eyes:"],
+							"Looking for more answers. :eyes:"],
 
 	"AnswererFeedbackPositive" : ["Your answer was accepted by {0}. :clap:",
 								  "What you said to {0} was accepted.",
