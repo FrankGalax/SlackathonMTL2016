@@ -13,8 +13,7 @@ namespace SlackathonMTL.Model
         ManyExpertsFound,
         FewExpertsFound,
         NoExpertsFound,
-        ManyExpertiseFound,
-        FewExpertiseFound,
+        ExpertiseFound,
         NoExpertiseFound,
         AcceptedAnswer,
         UnknownPerson, // Person not in DB

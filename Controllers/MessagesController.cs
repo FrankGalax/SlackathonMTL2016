@@ -227,7 +227,7 @@ namespace SlackathonMTL
             ConnectorClient connector = new ConnectorClient();
 
             replyMessage.From = answerAck.From;
-            replyMessage.Text = answerAck.Text + nextAnswer.MessageText + " - Is it a good answer?";
+            replyMessage.Text = answerAck.Text + nextAnswer.MessageText + Reply.GetReply(ReplyType.IsGoodAnswerQuestion).Text;
             replyMessage.Language = "en";
             replyMessage.To = broadcast.Asker;
             if (replyMessage.From.Id == null)
@@ -285,9 +285,13 @@ namespace SlackathonMTL
 
                 Message replyMessage = new Message();
                 replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
+                replyMessage.Text = Reply.GetReply(ReplyType.HasAnsweredMessage).Text;
                 replyMessage.Language = "en";
                 replyMessage.To = broadcast.Asker;
+                connector.Messages.SendMessage(replyMessage);
+
+                replyMessage.Text = answerAck.Text + answerString + " - Is it a good answer?";
+
                 connector.Messages.SendMessage(replyMessage);
 
                 return true;
@@ -462,7 +466,7 @@ namespace SlackathonMTL
             }
             else
             {
-                return message.CreateReplyMessage("There is no one to answer your question.", "en");
+                return message.CreateReplyMessage(Reply.GetReply(ReplyType.NoExpertsFound).Text);
             }
         }
 
@@ -492,12 +496,25 @@ namespace SlackathonMTL
             StringBuilder response = new StringBuilder();
             if (potentialExpertise.Count == 0)
             {
-                response.Append(Reply.GetReply(ReplyType.NoExpertsFound).Text);
+                response.Append(Reply.GetReply(ReplyType.NoExpertiseFound).Text);
             }
             else
             {
+                response.Append(Reply.GetReply(ReplyType.ExpertiseFound).Text +": ");
                 for (int i = 0; i < potentialExpertise.Count && i < 3; ++i)
                 {
+                    if (i == 0)
+                    {
+                    }
+                    else if (i < potentialExpertise.Count - 1)
+                    {
+                        response.Append(", ");
+                    }
+                    else
+                    {
+                        response.Append(" and ");
+                    }
+
                     response.Append(string.Format($"{potentialExpertise[i].Key.Name}\n"));
                 }
             }
@@ -522,7 +539,7 @@ namespace SlackathonMTL
             float points = Matrix.GetPoints(person, subject);
 
             StringBuilder response = new StringBuilder();
-            response.Append(string.Format($"{person.Username} has {points} points for {subject.Name}"));
+            response.Append(string.Format(Reply.GetReply(ReplyType.PointCount).Text, person.Username, points, subject.Name));
             return message.CreateReplyMessage(response.ToString(), "en");
         }
     }
