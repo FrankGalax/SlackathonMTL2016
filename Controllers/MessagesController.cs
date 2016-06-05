@@ -212,24 +212,17 @@ namespace SlackathonMTL
             Message answerAck = message.CreateReplyMessage("@" + nextAnswer.Answerer.Name + ": ");
 
             Message replyMessage = new Message();
-            try
-            {
-                ConnectorClient connector = new ConnectorClient();
+            ConnectorClient connector = new ConnectorClient();
 
-                replyMessage.From = answerAck.From;
-                replyMessage.Text = answerAck.Text + nextAnswer.MessageText + " - Is it a good answer?";
-                replyMessage.Language = "en";
-                replyMessage.To = broadcast.Asker;
-                if (replyMessage.From.Id == null)
-                {
-                    replyMessage.From = message.To;
-                }
-                return replyMessage;
-            }
-            catch (Exception ex)
+            replyMessage.From = answerAck.From;
+            replyMessage.Text = answerAck.Text + nextAnswer.MessageText + " - Is it a good answer?";
+            replyMessage.Language = "en";
+            replyMessage.To = broadcast.Asker;
+            if (replyMessage.From.Id == null)
             {
-                throw new Exception($"{ex.Message} ben {JsonConvert.SerializeObject(replyMessage)} cest ca");
+                replyMessage.From = message.To;
             }
+            return replyMessage;
         }
 
         private bool CheckForBroadcastAnswer(Message message)
