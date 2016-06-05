@@ -264,19 +264,18 @@ namespace SlackathonMTL
                 if (broadcast.Asker.Id != asker.Id)
                     continue;
 
-                if (broadcast.Status == BroadcastStatus.WaitingForApproval && broadcast.Answers.Count > 0)
-                {
-                    broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = message.Text });
-                    return true;
-                }
-
-                broadcast.Status = BroadcastStatus.WaitingForApproval;
-
-
                 string[] split = message.Text.Split(' ');
 
                 Regex rgx = new Regex(split.FirstOrDefault(s => s.StartsWith("@")) + " ");
                 string answerString = rgx.Replace(message.Text, "", 1);
+
+                if (broadcast.Status == BroadcastStatus.WaitingForApproval && broadcast.Answers.Count > 0)
+                {
+                    broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
+                    return true;
+                }
+
+                broadcast.Status = BroadcastStatus.WaitingForApproval;
                 
                 broadcast.Answers.Enqueue(new BroadcastAnswer { Answerer = message.From, MessageText = answerString });
                 var connector = new ConnectorClient();
@@ -306,7 +305,7 @@ namespace SlackathonMTL
 
             var connector = new ConnectorClient();
 
-            string messageString = $"{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using {currentBroadcast.Asker.Name}";
+            string messageString = $"@{currentBroadcast.Asker.Name} has a question about {currentBroadcast.SubjectName} : \"{message.Text}\" You can answer him here using {currentBroadcast.Asker.Name}";
 
             if (currentBroadcast.Recipients.Count <= 5 && currentBroadcast.Experts >= 0)
             { 
