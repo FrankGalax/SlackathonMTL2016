@@ -39,44 +39,41 @@ namespace SlackathonMTL
 
                     lock (megaLock)
                     {
-                        if (!message.Text.StartsWith("/"))
-                            return message.CreateReplyMessage(Reply.GetReply(ReplyType.None).Text, "en");
-
                         string[] parameters = message.Text.Split();
 
                         string command = parameters[0];
                         string entity1 = parameters.Length > 1 ? parameters[1] : null;
                         string entity2 = parameters.Length > 2 ? parameters[2] : null;
 
-                        if (command == "/findExpert")
+                        if (command == "findExpert")
                         {
                             return FindExpert(entity1, message);
                         }
-                        else if (command == "/findExpertise")
+                        else if (command == "findExpertise")
                         {
                             return FindExpertise(entity1, message);
                         }
-                        else if (command == "/findExpertiseForSubject")
+                        else if (command == "findExpertiseForSubject")
                         {
                             return FindExpertiseForSubject(entity1, entity2, message);
                         }
-                        else if (command == "/answerAccept")
+                        else if (command == "answerAccept")
                         {
                             return BroadcastAccept(message);
                         }
-                        else if (command == "/answerDeny")
+                        else if (command == "answerDeny")
                         {
                             return BroadcastDenied(message);
                         }
-                        else if (command == "/hello")
+                        else if (command == "hello")
                         {
                             return message.CreateReplyMessage(Reply.GetReply(ReplyType.Salutations).Text);
                         }
-                        else if (command == "/thanks")
+                        else if (command == "thanks")
                         {
                             return message.CreateReplyMessage(Reply.GetReply(ReplyType.Thanks).Text);
                         }
-                        else if (command == "/bye")
+                        else if (command == "bye")
                         {
                             return message.CreateReplyMessage(Reply.GetReply(ReplyType.Goodbyes).Text);
                         }
