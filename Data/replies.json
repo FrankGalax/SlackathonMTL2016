@@ -24,10 +24,10 @@
 						"They're not completly ignorant. :clap:",
 					    "I've seen better, but this is okay... I guess. :smirk_cat:"],
 	
-	"NoExpertiseFound" : ["Nah, they're no good. :see_no_evil:",
-						  "Better luck next time. :crystal_ball:",
+	"NoExpertiseFound" : ["There is nothing here. :see_no_evil:",
+						  "Unfortunatly, nothing.",
 						  "Seems like they aren't recognized in anything yet. :pensive:",
-						  "Sad ... Truly. :unamused:"],
+						  "Didn't find anything. :unamused:"],
 
 	"AcceptedAnswer" : ["This person is good ... :pencil2:",
 						"Oh interesting ... :black_nib:",
